@@ -3,13 +3,11 @@ import App from './App.vue'
 import router from './router'
 import 'bootstrap';
 import jQuery from 'jquery';
-
-window.$ = window.jQuery = jQuery;
-
+import BootstrapVue from 'bootstrap-vue'
 import 'popper.js';
 import './assets/styles/app.scss';
 
-import BootstrapVue from 'bootstrap-vue'
+window.$ = window.jQuery = jQuery;
 
 Vue.use(BootstrapVue)
 
