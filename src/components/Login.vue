@@ -27,7 +27,6 @@ export default {
             usuario: {
               email: '',
               senha: '',
-              token: ''
             }
         }
     },

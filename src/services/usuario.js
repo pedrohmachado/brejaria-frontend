@@ -11,7 +11,8 @@ export default {
     },
 
     logout:()=>{
-        instance.defaults.headers.common['Authorization'] = "";
-        return localStorage.removeItem("token")
+        delete instance.defaults.headers.common['Authorization'];
+        localStorage.removeItem("token");
+        return
     }
 }

@@ -33,8 +33,9 @@ export default {
   },
   methods : {
       logout() {
-          Usuario.logout()
-          this.$router.push({name: 'login'})
+          Usuario.logout().then(() =>{
+            this.$router.push({name: 'login'})
+          })
       }
   }
 }
