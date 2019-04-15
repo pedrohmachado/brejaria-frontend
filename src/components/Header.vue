@@ -24,10 +24,18 @@
 </template>
 
 <script>
+import Usuario from "../services/usuario";
+
 export default {
   name: 'header-app',
   components: {
 
+  },
+  methods : {
+      logout() {
+          Usuario.logout()
+          this.$router.push({name: 'login'})
+      }
   }
 }
 </script>

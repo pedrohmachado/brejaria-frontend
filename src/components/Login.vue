@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Auth from "../services/auth";
+import Usuario from "../services/usuario";
 
 export default {
     name: 'login',
@@ -27,17 +27,20 @@ export default {
             usuario: {
               email: '',
               senha: '',
+              token: ''
             }
         }
     },
     methods: {
       login() {
         alert(JSON.stringify(this.usuario))
-        Auth.login(this.usuario).then(resposta =>{
-          alert(JSON.stringify(resposta))
-            //this.usuario = {}
-            //this.$router.push({name: 'perfil'})
-          })
+        Usuario.login(this.usuario).then(resposta =>{
+          alert(JSON.stringify(resposta.data.usuario.token))
+          localStorage.setItem("token", resposta.data.usuario.token)
+          alert(localStorage.getItem("token"))
+          // this.usuario = {}
+          this.$router.push({name: 'eu'})
+        })
       },
     }
 }
