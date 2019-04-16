@@ -30,7 +30,22 @@ let router = new Router ({
       component: () => import('./components/Perfil.vue')
     },
     {
-      path: '/register',
+      path: '/produtos',
+      name: 'Produtos',
+      component: () => import('./components/Produtos.vue')
+    },
+    {
+      path: '/eventos',
+      name: 'Eventos',
+      component: () => import('./components/Eventos.vue')
+    },
+    {
+      path: '/sobre',
+      name: 'Sobre',
+      component: () => import('./components/Sobre.vue')
+    },
+    {
+      path: '/cadastro',
       name: 'Register',
       component: () => import('./components/Register.vue')
     },
