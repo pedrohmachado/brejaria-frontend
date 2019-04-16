@@ -4,7 +4,7 @@
         <img class="mb-4" src="../assets/logo.png" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Dados de acesso</h1>
         <label for="inputEmail" class="sr-only">E-mail</label>
-        <b-form-input type="text" id="inputEmail" v-model="usuario.email" class="form-control" placeholder="E-mail" required autofocus/>
+        <b-form-input type="email" id="inputEmail" v-model="usuario.email" class="form-control" placeholder="E-mail" required autofocus/>
 
         <label for="inputPassword" class="sr-only">Senha</label>
         <b-form-input type="password" id="inputPassword" v-model="usuario.senha" class="form-control" placeholder="Senha" required/>
@@ -21,27 +21,32 @@
 import Usuario from "../services/usuario";
 
 export default {
-    name: 'login',
-    data(){
-        return{
-            usuario: {
-              email: '',
-              senha: '',
-            }
-        }
-    },
-    methods: {
-      login() {
-        alert(JSON.stringify(this.usuario))
-        Usuario.login(this.usuario).then(resposta =>{
-          alert(JSON.stringify(resposta.data.usuario.token))
-          localStorage.setItem("token", resposta.data.usuario.token)
-          alert(localStorage.getItem("token"))
-          // this.usuario = {}
-          this.$router.push({name: 'eu'})
-        })
-      },
+  name: 'login',
+  data(){
+    return{
+      usuario: {
+        email: '',
+        senha: '',
+        token: '',
+      }
     }
+  },
+  methods: {
+    login() {
+      Usuario.login(this.usuario).then((resposta =>{   
+          if(resposta.data.status===false){
+            alert("Login inválido")
+          } else {
+            let token = resposta.data.usuario.token;    
+            let nome = resposta.data.usuario.nome;
+            localStorage.setItem('token', token);
+            localStorage.setItem('nome-usuario', nome);
+            //alert(localStorage.getItem('token'));
+            this.$router.push({name: 'Eu'});
+          }  
+      })
+    )},
+  }
 }
 </script>
 

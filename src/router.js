@@ -4,16 +4,16 @@ import Home from './components/Home.vue'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router ({
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: '/home',
+      name: 'Home',
       component: Home
     },
     {
       path: '/helloWorld',
-      name: 'helloWorld',
+      name: 'HelloWorld',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -21,17 +21,39 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'login',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './components/Login.vue')
+      name: 'Login',
+      component: () => import('./components/Login.vue')
     },
     {
       path: '/eu',
-      name: 'eu',
+      name: 'Eu',
       component: () => import('./components/Perfil.vue')
     },
+    {
+      path: '/register',
+      name: 'Register',
+      component: () => import('./components/Register.vue')
+    },
+    { 
+      path: '*',
+      redirect: '/home'
+    }
   ]
-});
+})
+
+const openRoutes = ['Login', 'Register', 'Home'];
+
+router.beforeEach((to, from, next) => {
+  if(openRoutes.includes(to.name)){
+    next()
+  } else if (localStorage.getItem('token')){
+    next()
+  } else {
+    next('/login')
+  }
+})
+
+export default router
+
+
 
