@@ -46,8 +46,18 @@ let router = new Router ({
     },
     {
       path: '/cadastro',
-      name: 'Register',
-      component: () => import('./components/Register.vue')
+      name: 'Cadastro',
+      component: () => import('./components/Cadastro.vue')
+    },
+    {
+      path: '/evento/novo',
+      name: 'EventoCadastro',
+      component: () => import('./components/EventoCadastro.vue')
+    },
+    {
+      path: '/produto/novo',
+      name: 'ProdutoCadastro',
+      component: () => import('./components/ProdutoCadastro.vue')
     },
     { 
       path: '*',
@@ -56,7 +66,7 @@ let router = new Router ({
   ]
 })
 
-const openRoutes = ['Login', 'Register', 'Home'];
+const openRoutes = ['Login', 'Cadastro', 'Home'];
 
 router.beforeEach((to, from, next) => {
   if(openRoutes.includes(to.name)){

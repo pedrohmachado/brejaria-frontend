@@ -2,8 +2,12 @@ import { instance } from './config'
 
 export default {
 
+    cadastra:(usuario)=>{
+        return instance.post('usuario/novo', usuario)
+    },
+
     login:(usuario)=>{
-         return instance.post('usuario/login', usuario)
+        return instance.post('usuario/login', usuario)
     },
 
     getPerfil:()=>{
