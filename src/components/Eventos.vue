@@ -12,8 +12,8 @@
                 <div class="acoes">  
                     <b-button  >Excluir</b-button>
                     <b-button  >Alterar</b-button>
-                    <b-button @click="adicionaParticipante(row.item, row.index)" v-model="row.evento">Participar</b-button>
-                    <b-button @click="removeParticipante(row.item, row.index)" v-model="row.evento">Sair</b-button>
+                    <b-button @click="adicionaParticipante(row.item)" v-model="row.evento">Participar</b-button>
+                    <b-button @click="removeParticipante(row.item)" v-model="row.evento">Sair</b-button>
                 </div>
             </template>
         </b-table>
@@ -68,6 +68,22 @@ export default {
         listaEventos() {
             Evento.getEventos().then((resposta) => {
                 this.eventos = resposta.data.data
+            })
+        },
+
+        adicionaParticipante(item) {
+            Evento.adicionaParticipante(item.id).then((resposta) => {
+                alert(JSON.stringify(resposta))
+                item = {}
+                this.listaEventos()
+            })
+        },
+
+        removeParticipante(item) {
+            Evento.removeParticipante(item.id).then((resposta)=>{
+                alert(JSON.stringify(resposta))
+                item = {}
+                this.listaEventos()
             })
         }
     }
