@@ -26,5 +26,11 @@ export default {
         return instance.post(URLParametrizada, {}, {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
+    },
+
+    getEvento:(IDEvento) => {
+        return instance.get('evento/' + IDEvento, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
     }
 }

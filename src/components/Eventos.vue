@@ -10,6 +10,7 @@
         <b-table striped hover :items="eventos" :fields="fields" :sort-by.sync="sortBy">
             <template slot="acoes" slot-scope="row">
                 <div class="acoes">  
+                    <b-button @click="detalhaEvento(row.item)" v-model="row.evento">Detalhar</b-button>
                     <b-button  >Excluir</b-button>
                     <b-button  >Alterar</b-button>
                     <b-button @click="adicionaParticipante(row.item)" v-model="row.evento">Participar</b-button>
@@ -31,6 +32,9 @@
 import Evento from '../services/eventos'
 
 export default {
+    props: {
+        IDEvento: String
+    },
     data() {
         return {
             sortBy: 'id',
@@ -85,6 +89,11 @@ export default {
                 item = {}
                 this.listaEventos()
             })
+        },
+
+        detalhaEvento(item) {
+            this.IDEvento = item.id
+            this.$router.push({name: 'EventoDetalhes', params: {id: this.IDEvento}});
         }
     }
 }
