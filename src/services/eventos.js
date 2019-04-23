@@ -32,5 +32,11 @@ export default {
         return instance.get('evento/' + IDEvento, {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
+    },
+
+    getMeusEventos:() => {
+        return instance.get('eu/eventos', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
     }
 }

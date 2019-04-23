@@ -60,7 +60,7 @@ let router = new Router ({
       component: () => import('./components/ProdutoCadastro.vue')
     },
     {
-      path: 'evento/:id',
+      path: '/evento/:id',
       name: 'EventoDetalhes',
       component: () => import('./components/EventoDetalhes.vue')
     },

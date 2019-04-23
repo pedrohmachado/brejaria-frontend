@@ -1,9 +1,13 @@
 <template>
     <div class="perfil">
         <b-form class="form-signin">
-            {{usuario.id}}
-            {{usuario.email}}
-            <b-button class="btn btn-lg btn-primary btn-block" variant="dark" v-on:click="getPerfil">Salvar</b-button>
+          <p>meus dados {{usuario}}</p>
+            
+          <p>meus produtos {{produtos}}</p>
+
+          <p>meus eventos {{eventos}}</p>
+
+          <b-button class="btn btn-lg btn-primary btn-block" variant="dark" v-on:click="getPerfil">Salvar</b-button>
         </b-form>
 
     </div>
@@ -12,6 +16,8 @@
 
 <script>
 import Usuario from '../services/usuario';
+import Produtos from '../services/produtos';
+import Eventos from '../services/eventos'
 
 export default {
     name: 'perfil',
@@ -22,19 +28,37 @@ export default {
                 email: '',
                 senha: '',
                 token: ''
-            }
+            },
+            produtos: [],
+            eventos: []
         } 
     },
     mounted() {
         this.getPerfil()
+        this.getMeusProdutos()
+        this.getMeusEventos()
     },
     methods: {
         getPerfil() {
-            Usuario.getPerfil().then(resposta =>{
+            Usuario.getPerfil().then((resposta) =>{
                 this.usuario = resposta.data.data
                 //alert(JSON.stringify(this.usuario))
             })
+        },
+
+        getMeusProdutos() {
+          Produtos.getMeusProdutos().then((resposta) => {
+            this.produtos = resposta.data.data
+          })
+        },
+
+        getMeusEventos() {
+          Eventos.getMeusEventos().then((resposta)=>{
+            this.eventos = resposta.data.data
+          })
         }
+
+
     }
 }
 </script>

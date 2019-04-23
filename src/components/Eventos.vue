@@ -7,14 +7,12 @@
 
         <b-button to="/evento/novo">Crie seu evento</b-button>
 
-        <b-table striped hover :items="eventos" :fields="fields" :sort-by.sync="sortBy">
+        <b-table striped hover :items="eventos" :fields="fields" :sort-by.sync="sortBy" responsive="sm">
             <template slot="acoes" slot-scope="row">
                 <div class="acoes">  
-                    <b-button @click="detalhaEvento(row.item)" v-model="row.evento">Detalhar</b-button>
-                    <b-button  >Excluir</b-button>
-                    <b-button  >Alterar</b-button>
-                    <b-button @click="adicionaParticipante(row.item)" v-model="row.evento">Participar</b-button>
-                    <b-button @click="removeParticipante(row.item)" v-model="row.evento">Sair</b-button>
+                    <b-button size="sm" @click="detalhaEvento(row.item)" v-model="row.evento">Detalhar</b-button>
+                    <b-button size="sm" @click="adicionaParticipante(row.item)" v-model="row.evento">Participar</b-button>
+                    <b-button size="sm" @click="removeParticipante(row.item)" v-model="row.evento">Sair</b-button>
                 </div>
             </template>
         </b-table>
@@ -32,9 +30,6 @@
 import Evento from '../services/eventos'
 
 export default {
-    props: {
-        IDEvento: String
-    },
     data() {
         return {
             sortBy: 'id',
@@ -92,8 +87,7 @@ export default {
         },
 
         detalhaEvento(item) {
-            this.IDEvento = item.id
-            this.$router.push({name: 'EventoDetalhes', params: {id: this.IDEvento}});
+            this.$router.push({name: 'EventoDetalhes', params: {id: item.id}});
         }
     }
 }

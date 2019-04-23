@@ -12,5 +12,11 @@ export default {
         return instance.get('produtos', {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
+    },
+
+    getMeusProdutos:() => {
+        return instance.get('eu/produtos', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
     }
 }
