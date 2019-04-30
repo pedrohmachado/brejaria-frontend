@@ -7,7 +7,7 @@
 
         <b-button to="/evento/novo">Crie seu evento</b-button>
 
-        <b-table striped hover :items="eventos" :fields="fields" :sort-by.sync="sortBy" responsive="sm">
+        <!-- <b-table striped hover :items="eventos" :fields="fields" :sort-by.sync="sortBy" responsive="sm">
             <template slot="acoes" slot-scope="row">
                 <div class="acoes">  
                     <b-button size="sm" @click="detalhaEvento(row.item)" v-model="row.evento">Detalhar</b-button>
@@ -15,13 +15,22 @@
                     <b-button size="sm" @click="removeParticipante(row.item)" v-model="row.evento">Sair</b-button>
                 </div>
             </template>
-        </b-table>
+        </b-table> -->
 
+        <div class="mt-3">
+            <b-card-group columns class="mb-3">
+                <b-card v-for="item in eventos" v-bind:key="item.id" img-src="https://picsum.photos/300/300/?image=41">
+                    <b-card-title>{{item.nome}}</b-card-title>
+                    <b-card-sub-title>{{item.local}}</b-card-sub-title>
+                    <b-card-text>
+                        {{item.descricao}}
+                    </b-card-text>
+                    <b-button size="sm" @click="detalhaEvento(item)">Detalhes</b-button> 
+                    <div slot="footer"><small class="text-muted">{{item.data_evento}}</small></div>
+                </b-card>
 
-
-
-
-
+            </b-card-group>
+        </div>
 
     </div>
 </template>
@@ -43,7 +52,9 @@ export default {
                 status: '',
                 usuario_id: '',
                 participantes: [],
+                usuarioParticipante: '',
             },
+
             eventos: [],
             fields: [{key: 'id', sortable: true},
                 'nome',
@@ -62,7 +73,7 @@ export default {
     mounted() {
         this.listaEventos()
     },
-
+    
     methods: {
         listaEventos() {
             Evento.getEventos().then((resposta) => {
@@ -70,25 +81,9 @@ export default {
             })
         },
 
-        adicionaParticipante(item) {
-            Evento.adicionaParticipante(item.id).then((resposta) => {
-                alert(JSON.stringify(resposta))
-                item = {}
-                this.listaEventos()
-            })
+        detalhaEvento(evento) {
+            this.$router.push({name: 'EventoDetalhes', params: {id: evento.id}});
         },
-
-        removeParticipante(item) {
-            Evento.removeParticipante(item.id).then((resposta)=>{
-                alert(JSON.stringify(resposta))
-                item = {}
-                this.listaEventos()
-            })
-        },
-
-        detalhaEvento(item) {
-            this.$router.push({name: 'EventoDetalhes', params: {id: item.id}});
-        }
     }
 }
 </script>
