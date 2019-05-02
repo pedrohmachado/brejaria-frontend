@@ -19,9 +19,12 @@
 
         <div class="mt-3">
             <b-card-group columns class="mb-3">
-                <b-card v-for="item in eventos" v-bind:key="item.id" img-src="https://picsum.photos/300/300/?image=41">
+                <b-card v-for="item in eventos" v-bind:key="item.id" img-src="https://picsum.photos/300/300/?image=41" img-top>
                     <b-card-title>{{item.nome}}</b-card-title>
-                    <b-card-sub-title>{{item.local}}</b-card-sub-title>
+                    <b-card-sub-title>
+                        <img class="icon" src="../assets/local.png">
+                        {{item.local}}
+                    </b-card-sub-title>
                     <b-card-text>
                         {{item.descricao}}
                     </b-card-text>
@@ -71,11 +74,11 @@ export default {
     },
 
     mounted() {
-        this.listaEventos()
+        this.getEventos()
     },
     
     methods: {
-        listaEventos() {
+        getEventos() {
             Evento.getEventos().then((resposta) => {
                 this.eventos = resposta.data.data
             })
@@ -89,5 +92,8 @@ export default {
 </script>
 
 <style scoped>
-
+    .icon{
+        height: 16px;
+        width: 16px;
+    }
 </style>

@@ -11,7 +11,7 @@ import Header from '@/components/Header.vue'
 export default {
   name: 'app',
   components: {
-    Header
+    Header,
   },
 }
 </script>
@@ -25,4 +25,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>

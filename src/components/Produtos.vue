@@ -7,11 +7,12 @@
 
         <b-button to="/produto/novo">Crie seu produto</b-button>
 
-        <b-table striped hover :items="produtos" :fields="fields" :sort-by.sync="sortBy">
+        <b-table striped hover fixed style="vertical-align: middle;" :items="produtos" :fields="fields" :sort-by.sync="sortBy">
             <template slot="acoes" slot-scope="row">
                 <div class="acoes">
                     <b-button @click="excluiProduto(row.item, row.index)" v-model="row.produto">Excluir</b-button>
                     <b-button @click="alteraProduto(row.item, row.index)" v-model="row.produto">Alterar</b-button>
+                    <b-button @click="detalhaProduto(row.item)" v-model="row.produto">Detalhar</b-button>
                 </div>
             </template>
         </b-table>
@@ -51,6 +52,10 @@ export default {
             Produto.getProdutos().then((resposta) => {
                 this.produtos = resposta.data.data
             })
+        },
+
+        detalhaProduto(produto) {
+            this.$router.push({name: 'ProdutoDetalhes', params: {id: produto.id}});
         },
     }
 }

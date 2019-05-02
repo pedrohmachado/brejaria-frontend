@@ -65,6 +65,11 @@ let router = new Router ({
       component: () => import('./components/EventoDetalhes.vue')
     },
     {
+      path: '/produto/:id',
+      name: 'ProdutoDetalhes',
+      component: () => import('./components/ProdutoDetalhes.vue')
+    },
+    {
       path: '*',
       redirect: '/home'
     }

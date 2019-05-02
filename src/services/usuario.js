@@ -14,5 +14,11 @@ export default {
         return instance.get('eu', {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
+    },
+
+    altera:(usuario) => {
+        return instance.put('usuario/alterar', usuario, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
     }
 }

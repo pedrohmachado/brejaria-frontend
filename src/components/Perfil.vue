@@ -7,7 +7,48 @@
 
           <p>meus eventos {{eventos}}</p>
 
-          <b-button class="btn btn-lg btn-primary btn-block" variant="dark" v-on:click="getPerfil">Salvar</b-button>
+        </b-form>
+        <b-form @submit="alteraUsuario" @reset="limpaForm">
+                <b-form-group
+                    id="emailGroup"
+                    label="E-mail:"
+                    label-for="emailInput"
+                    description="Seu e-mail não será compartilhado com ninguém."
+                >
+                    <b-form-input
+                        id="emailInput"
+                        type="email"
+                        v-model="usuario.email"
+                        required
+                        placeholder="exemplo@brejaria.com" />
+                </b-form-group>
+
+                <b-form-group id="nomeGroup" label="Nome:" label-for="nomeInput">
+                    <b-form-input
+                        id="nomeInput"
+                        type="text"
+                        v-model="usuario.nome"
+                        required
+                        placeholder="Digite seu nome" />
+                </b-form-group>
+
+                <b-form-group id="senhaGroup" label="Senha:" label-for="senha">
+                    <b-form-input
+                        id="senha"
+                        type="password"
+                        v-model="usuario.senha"
+                        required
+                        placeholder="Digite sua senha" />
+                </b-form-group>
+
+                <b-form-group id="interessesGroup" label="Interesses:">
+                    <b-form-checkbox-group v-model="usuario.perfil" id="interessesCheck">
+                        <b-form-checkbox value="1">Anunciar</b-form-checkbox>
+                        <b-form-checkbox value="2">Consumir</b-form-checkbox>
+                    </b-form-checkbox-group>
+                </b-form-group>
+                <b-button class="btn btn-md btn-primary btn-block" type="submit" variant="dark">Enviar</b-button>
+                <b-button class="btn btn-md btn-primary btn-block" type="reset" variant="danger">Limpar</b-button>
         </b-form>
 
     </div>
@@ -27,7 +68,8 @@ export default {
                 id: '',
                 email: '',
                 senha: '',
-                token: ''
+                token: '',
+                perfil: ''
             },
             produtos: [],
             eventos: []
@@ -56,8 +98,18 @@ export default {
           Eventos.getMeusEventos().then((resposta)=>{
             this.eventos = resposta.data.data
           })
-        }
+        },
 
+        alteraUsuario() {
+          Usuario.altera(this.usuario).then((resposta)=>{
+            this.usuario = resposta.data.data;
+            this.getPerfil();
+            this.getMeusProdutos();
+            this.getMeusEventos();
+          })
+        },
+
+        limpaForm(){}
 
     }
 }
