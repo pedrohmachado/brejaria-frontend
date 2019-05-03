@@ -1,11 +1,18 @@
 <template>
     <div class="perfil">
         <b-form class="form-signin">
-          <p>meus dados {{usuario}}</p>
+          <p>meus dados</p> 
+          <div>{{usuario}}</div>
             
-          <p>meus produtos {{produtos}}</p>
+          <p>meus produtos</p>
+          <div v-for="(produto, i) in produtos" :key="i">
+            <p> {{produto}}</p>
+          </div>
 
-          <p>meus eventos {{eventos}}</p>
+          <p>meus eventos</p>
+          <div v-for="(evento, i) in eventos" :key="`A-${i}`">
+            <p>{{evento}}</p>
+          </div>
 
         </b-form>
         <b-form @submit="alteraUsuario" @reset="limpaForm">
@@ -70,6 +77,16 @@ export default {
                 senha: '',
                 token: '',
                 perfil: ''
+            },
+            evento: {
+              id: '',
+              nome: '',
+              descricao: '',
+            },
+            produto: {
+              id: '',
+              nome: '',
+              descricao: '',
             },
             produtos: [],
             eventos: []

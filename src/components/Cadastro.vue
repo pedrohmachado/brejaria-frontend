@@ -1,9 +1,38 @@
 <template>
     <div class="cadastro">
         <h1>Informe seus dados</h1>
-        <div class="form-register">
-            <b-form @submit="cadastra" @reset="limpaForm" v-if="show">
-                <b-form-group
+        <div class="form-cadastro">
+            <b-form @submit="cadastra" @reset="limpa">
+                <b-form-group>
+                    
+                    <b-input-group size="md" prepend="Nome">
+                        <b-input required size="md" type="text" placeholder="Digite seu nome completo"></b-input>
+                    </b-input-group>
+                </b-form-group>
+                <b-form-group label-for="emailInput" description="Seu e-mail não será compartilhado com ninguém.">
+                    
+                    <b-input-group id="emailInput" size="md" prepend="E-mail">
+                        <b-input required size="md" type="email" placeholder="exemplo@brejaria.com"></b-input>
+                    </b-input-group>
+                </b-form-group>
+                <b-form-group>
+                    
+                    <b-input-group size="md" prepend="Senha">
+                        <b-input required size="md" type="password" placeholder="Senha com mais de 6 caracteres"></b-input>
+                    </b-input-group>
+                </b-form-group>
+
+                
+                    <b-btn-group>
+                        <b-button variant="success" type="submit">Enviar</b-button>
+                        <b-button variant="info" type="reset">Limpar</b-button>
+                    </b-btn-group>
+                
+
+            </b-form>
+
+
+                <!-- <b-form-group
                     id="emailGroup"
                     label="E-mail:"
                     label-for="emailInput"
@@ -14,7 +43,8 @@
                         type="email"
                         v-model="usuario.email"
                         required
-                        placeholder="exemplo@brejaria.com" />
+                        placeholder="exemplo@brejaria.com"
+                        />
                 </b-form-group>
 
                 <b-form-group id="nomeGroup" label="Nome:" label-for="nomeInput">
@@ -42,10 +72,11 @@
                     </b-form-checkbox-group>
                 </b-form-group>
 
+
                 <b-button class="btn btn-md btn-primary btn-block" type="submit" variant="dark">Enviar</b-button>
-                <b-button class="btn btn-md btn-primary btn-block" type="reset" variant="danger">Limpar</b-button>
+                <b-button class="btn btn-md btn-primary btn-block" type="reset" variant="danger">Limpar</b-button> -->
  
-            </b-form>
+                
         </div>
     </div>
 </template>
@@ -87,7 +118,7 @@ export default {
             }
         },
 
-        limpaForm() {
+        limpa() {
             /* limpa todos os campos */
             this.usuario.email = ''
             this.usuario.nome = ''
@@ -104,7 +135,13 @@ export default {
 </script>
 
 <style scoped>
-  .form-register {
+    .form-cadastro{
+        width: 100%;
+        max-width: 600px;
+        padding: 15px;
+        margin: auto;
+    }
+  /* .form-register {
     width: 100%;
     max-width: 400px;
     padding: 15px;
@@ -121,6 +158,6 @@ export default {
     font-size: 16px;
   }
   .form-signin .form-control:focus {
-  z-index: 2;
-  }
+    z-index: 2;
+  } */
 </style>
