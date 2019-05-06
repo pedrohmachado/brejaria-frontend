@@ -27,15 +27,45 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+
+        <form enctype="multipart/form-data" @submit="onUpload"> 
+          <input type="file" @change="onFileSelected" />
+          <button type="submit">Upload</button>
+        </form>
+       
+
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'helloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      selectedFile: null,
+    }
+  },
+  methods: {
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0]
+    },
+
+    onUpload() {
+      const fd = new FormData();
+      fd.append('image', this.selectedFile, this.selectedFile.name)
+      axios.post('http://localhost:8081/api/upload', fd,{headers:{ Authorization: `Bearer ` + localStorage.getItem('token')}}).then(resposta =>{
+        console.log(resposta);
+      })
+    }
   }
+
+
+
 }
 </script>
 

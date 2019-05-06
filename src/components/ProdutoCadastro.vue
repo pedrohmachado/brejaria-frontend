@@ -27,11 +27,12 @@
                     required
                     placeholder="Faça as pessoas se interessarem pelo seu produto" />
             </b-form-group>
-                    
-            <div class="butao">
-                <b-button class="btn btn-md btn-primary btn-block" type="submit" variant="dark">Enviar</b-button>
-                <b-button class="btn btn-md btn-primary btn-block" type="reset" variant="danger">Limpar</b-button>
-            </div>
+
+             
+                <div class="butao">
+                    <b-button class="btn btn-md btn-primary btn-block" type="submit" variant="dark">Enviar</b-button>
+                    <b-button class="btn btn-md btn-primary btn-block" type="reset" variant="danger">Limpar</b-button>
+                </div>
         </b-form>
     </div>
 </template>
@@ -47,6 +48,7 @@ export default {
             nome: '',
             descricao: '',
         },
+        imagem: '',
         show: true
       }
     },
