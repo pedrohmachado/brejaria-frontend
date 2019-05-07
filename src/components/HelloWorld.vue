@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
+    <!-- <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
@@ -26,19 +26,22 @@
       <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    </ul> -->
 
         <form enctype="multipart/form-data" @submit="onUpload"> 
+          <input v-model="IDProduto" type="text"/>
           <input type="file" @change="onFileSelected" />
           <button type="submit">Upload</button>
         </form>
-       
+
+        <!-- <img v-bind:src="imagem"/>
+        <img src="http://localhost:8081/api/imagem/produto/4"/> -->       
 
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import Util from "../services/utils"
 
 export default {
   name: 'helloWorld',
@@ -48,8 +51,15 @@ export default {
   data() {
     return {
       selectedFile: null,
+      IDProduto: '',
+      imagem: '',
     }
   },
+
+  mounted() {
+    this.imagem = 'http://localhost:8081/api/imagem/produto/' + 3
+  },
+
   methods: {
     onFileSelected(event) {
       this.selectedFile = event.target.files[0]
@@ -58,10 +68,10 @@ export default {
     onUpload() {
       const fd = new FormData();
       fd.append('image', this.selectedFile, this.selectedFile.name)
-      axios.post('http://localhost:8081/api/upload', fd,{headers:{ Authorization: `Bearer ` + localStorage.getItem('token')}}).then(resposta =>{
-        console.log(resposta);
+      Util.uploadImagemProduto(this.IDProduto, fd).then(()=>{
+        
       })
-    }
+    },
   }
 
 

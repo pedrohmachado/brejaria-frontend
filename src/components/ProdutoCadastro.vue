@@ -56,9 +56,8 @@ export default {
         cadastraProduto() {
             alert(JSON.stringify(this.produto))
             Produto.cadastraProduto(this.produto).then(resposta =>{
-                alert(JSON.stringify(resposta))
+                
                 this.produto = {}
-                alert("Salvo com sucesso")
                 this.$router.push({path: '/produtos'})
             })
         },
