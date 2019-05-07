@@ -1,6 +1,6 @@
 <template>
     <div class="produto-cadastro">
-        <h1>Informe os dados do seu evento</h1>
+        <h1>Informe os dados do seu produto</h1>
         <b-form @submit="cadastraProduto" @reset="limpaForm" v-if="show" class="form-register">
             <b-form-group
                 id="nomeGroup"
@@ -54,10 +54,11 @@ export default {
     },
     methods: {
         cadastraProduto() {
-            alert(JSON.stringify(this.produto))
-            Produto.cadastraProduto(this.produto).then(() =>{
+            Produto.cadastraProduto(this.produto).then((resposta) =>{
+                let idProduto = JSON.stringify(resposta.data.produto.id)
+                alert(idProduto)
                 this.produto = {}
-                this.$router.push({path: '/produtos'})
+                this.$router.push({path: '/produto/' + idProduto})
             })
         },
         limpaForm(evt) {
