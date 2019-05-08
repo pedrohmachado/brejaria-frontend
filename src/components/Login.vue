@@ -31,6 +31,7 @@ export default {
       }
     }
   },
+
   methods: {
     login() {
       Usuario.login(this.usuario).then((resposta =>{   
@@ -41,7 +42,6 @@ export default {
             let nome = resposta.data.usuario.nome;
             localStorage.setItem('token', token);
             localStorage.setItem('nome-usuario', nome);
-            //alert(localStorage.getItem('token'));
             this.$router.push({name: 'Eu'});
           }  
       })

@@ -13,9 +13,10 @@
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto">
                         <b-nav-item-dropdown right>
-                            <template slot="button-content">Usuário<!--{{usuario.nome}}--></template>
+                            <template slot="button-content">{{usuario.nome}}</template>
                                 <b-dropdown-item to="/eu">Perfil</b-dropdown-item>
-                                <b-dropdown-item v-on:click='logout()'>Sair</b-dropdown-item>
+                                <b-dropdown-item v-if="ifLogado()" v-on:click='logout()'>Sair</b-dropdown-item>
+                                <b-dropdown-item v-else to="/login">Login</b-dropdown-item>
                         </b-nav-item-dropdown>  
                     </b-navbar-nav>
                 </b-collapse>
@@ -32,18 +33,29 @@ export default {
     },
     data() {
         return {
-            // usuario: {
-            //     nome: localStorage.getItem("nome-usuario")
-            // }
+            usuario: {
+                nome: '',
+            }
         }
+    },
+
+    mounted() {
+        this.usuario.nome = localStorage.getItem("nome-usuario")
     },
 
     methods : {
         logout() {
             localStorage.removeItem('token');
-            localStorage.removeItem('nome-usuario');
+            localStorage.setItem('nome-usuario', "Usuário");
             this.$router.push({name: 'Login'});
-        }
+        },
+
+        ifLogado() {
+            if (localStorage.getItem('token') != null) {
+                return true;
+            }
+            return false;
+        },
     }
 }
 

@@ -2,8 +2,9 @@
     <div class="produto-detalhes">
         <p>
         {{produto}}
-        <img height="100px" width="100px" v-bind:src="urlImagem"/>
         </p>
+        <img height="100px" width="100px" v-bind:src="urlImagem"/>
+        
 
         <form enctype="multipart/form-data" @submit="onUpload"> 
           <input type="file" @change="onFileSelected" />
@@ -52,7 +53,7 @@ export default {
             const fd = new FormData();
             fd.append('image', this.selectedFile, this.selectedFile.name)
             Util.uploadImagemProduto(this.produto.id, fd).then(()=>{
-                
+                location.reload();
             })
         },
     }

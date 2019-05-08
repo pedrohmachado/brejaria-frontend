@@ -28,11 +28,11 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul> -->
 
-        <form enctype="multipart/form-data" @submit="onUpload"> 
+        <!-- <form enctype="multipart/form-data" @submit="onUpload"> 
           <input v-model="IDProduto" type="text"/>
           <input type="file" @change="onFileSelected" />
           <button type="submit">Upload</button>
-        </form>
+        </form> -->
 
         <!-- <img v-bind:src="imagem"/>
         <img src="http://localhost:8081/api/imagem/produto/4"/> -->       
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import Util from "../services/utils"
 
 export default {
   name: 'helloWorld',
@@ -55,27 +54,6 @@ export default {
       imagem: '',
     }
   },
-
-  mounted() {
-    this.imagem = 'http://localhost:8081/api/imagem/produto/' + 3
-  },
-
-  methods: {
-    onFileSelected(event) {
-      this.selectedFile = event.target.files[0]
-    },
-
-    onUpload() {
-      const fd = new FormData();
-      fd.append('image', this.selectedFile, this.selectedFile.name)
-      Util.uploadImagemProduto(this.IDProduto, fd).then(()=>{
-        
-      })
-    },
-  }
-
-
-
 }
 </script>
 
