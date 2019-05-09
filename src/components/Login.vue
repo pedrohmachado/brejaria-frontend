@@ -42,7 +42,7 @@ export default {
             let nome = resposta.data.usuario.nome;
             localStorage.setItem('token', token);
             localStorage.setItem('nome-usuario', nome);
-            this.$router.push({name: 'Eu'});
+            this.$router.push({name: 'Eu'}, );       
           }  
       })
     )},

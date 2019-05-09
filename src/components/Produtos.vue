@@ -20,7 +20,7 @@
 
         <div class="mt-3">
             <b-card-group columns class="mb-3">
-                <b-card v-for="item in produtos" v-bind:key="item.id" :img-src="getImagem(item)" img-height="300rem" img-top>
+                <b-card v-for="item in produtos" v-bind:key="item.id" :img-src="getImagem(item)" img-fluid img-top>
                     <b-card-title>{{item.nome}}</b-card-title>
                     <b-card-text>
                         {{item.descricao}}

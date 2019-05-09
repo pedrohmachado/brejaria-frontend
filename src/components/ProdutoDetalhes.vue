@@ -7,8 +7,11 @@
         
 
         <form enctype="multipart/form-data" @submit="onUpload"> 
-          <input type="file" @change="onFileSelected" />
-          <button type="submit">Upload</button>
+            <div class="d-inline-block w-50">
+            <!-- <input type="file" @change="onFileSelected" /> -->   
+            <b-form-file placeholder="Selecione um arquivo..." accept="image/png" @change="onFileSelected"></b-form-file>
+            <b-button type="submit">Upload</b-button>
+            </div>
         </form>
     </div>
 </template>
@@ -61,6 +64,5 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
 

@@ -13,7 +13,7 @@
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto">
                         <b-nav-item-dropdown right>
-                            <template slot="button-content">{{usuario.nome}}</template>
+                            <template slot="button-content">{{nome}}</template>
                                 <b-dropdown-item to="/eu">Perfil</b-dropdown-item>
                                 <b-dropdown-item v-if="ifLogado()" v-on:click='logout()'>Sair</b-dropdown-item>
                                 <b-dropdown-item v-else to="/login">Login</b-dropdown-item>
@@ -28,8 +28,8 @@
 
 export default {
     name: 'header-app',
-    components: {
-
+    props: {
+        nome: String,
     },
     data() {
         return {
@@ -37,10 +37,6 @@ export default {
                 nome: '',
             }
         }
-    },
-
-    mounted() {
-        this.usuario.nome = localStorage.getItem("nome-usuario")
     },
 
     methods : {

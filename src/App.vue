@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <Header :nome=setNomeUsuario()></Header>
     <router-view/>
   </div>
 </template>
@@ -13,6 +13,13 @@ export default {
   components: {
     Header,
   },
+
+  methods: {
+    setNomeUsuario() {
+      return localStorage.getItem("nome-usuario")
+    },
+
+  }
 }
 </script>
 

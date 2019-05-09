@@ -1,56 +1,54 @@
 <template>
     <div class="evento-cadastro">
-        <h1>Informe os dados do seu evento</h1>
-        <b-form @submit="cadastraEvento" @reset="limpaForm" v-if="show" class="form-register">
-            <b-form-group
-                id="nomeGroup"
-                label="Nome: "
-                label-for="nomeInput"
-            >
-                <b-form-input
-                    id="nomeInput"
-                    type="text"
-                    v-model="evento.nome"
-                    required
-                    placeholder="Digite o nome do seu evento" />
-            </b-form-group>
-
-            <b-form-group
-                id="descricaoGroup"
-                label="Descrição: "
-                label-for="descricaoInput"
-            >
-                <b-form-textarea
-                    id="descricaoInput"
-                    type="text"
-                    v-model="evento.descricao"
-                    required
-                    placeholder="Faça as pessoas se interessarem pelo seu evento" />
-            </b-form-group>
-
-            <b-form-group id="localGroup" label="Local:" label-for="localInput">
-                <b-form-input
-                    id="localInput"
-                    type="text"
-                    v-model="evento.local"
-                    required
-                    placeholder="Digite o local do evento" />
-            </b-form-group>
-
-            <b-form-group id="dataEventoGroup" label="Data do evento:" label-for="dataEventoInput">
-                <b-form-input
-                    id="dataEventoInput"
-                    type="text"
-                    v-model="evento.data_evento"
-                    required
-                    placeholder="Digite a data (dd/mm/aaaa hh:mm)" />
-            </b-form-group>
+       <h1>Informe os dados do seu evento</h1>
+        <div class="form-cadastro">
+            <b-form @submit="cadastra" v-if="show" @reset="limpa">
+                <b-form-group>
                     
-            <div class="butao">
-                <b-button class="btn btn-md btn-primary btn-block" type="submit" variant="dark">Enviar</b-button>
-                <b-button class="btn btn-md btn-primary btn-block" type="reset" variant="danger">Limpar</b-button>
-            </div>
-        </b-form>
+                    <b-input-group size="md" prepend="Nome">
+                        <b-input  v-model="evento.nome" required size="md" type="text" placeholder="Digite o nome do seu evento"></b-input>
+                    </b-input-group>
+                </b-form-group>
+                <b-form-group>
+                    
+                    <b-input-group size="md" prepend="Descrição">
+                        <b-form-textarea v-model="evento.descricao" required size="md" type="email" placeholder="Faça as pessoas se interessarem pelo seu evento"></b-form-textarea>
+                    </b-input-group>
+                </b-form-group>
+                <b-form-group>
+                    
+                    <b-input-group size="md" prepend="Local">
+                        <b-input v-model="evento.local" required size="md" type="text" placeholder="Local"></b-input>
+                    </b-input-group>
+                </b-form-group>
+
+                <b-form-group >
+                    
+                    
+                    <div class="d-inline-block w-50">
+                        <b-input-group size="md" prepend="Data">
+                            <b-input v-model="data" required size="md" type="date"></b-input>
+                        </b-input-group>
+                    </div>
+                    <div class="d-inline-block w-50">
+                        <b-input-group size="md" prepend="Hora">
+                            <b-input v-model="hora" required size="md" type="time"></b-input>
+                        </b-input-group>
+                    </div>
+
+                
+                  
+
+                </b-form-group>
+
+                
+                
+                    <b-btn-group>
+                        <b-button variant="success" type="submit">Enviar</b-button>
+                        <b-button variant="info" type="reset">Limpar</b-button>
+                    </b-btn-group>
+            </b-form>
+        </div>
     </div>
 </template>
 
@@ -67,11 +65,14 @@ export default {
             local: '',
             data_evento: '',
         },
+        hora: '',
+        data: '',
         show: true
       }
     },
     methods: {
-        cadastraEvento() {
+        cadastra() {
+            this.evento.data_evento = this.data + " " + this.hora
             alert(JSON.stringify(this.evento))
             Evento.cadastraEvento(this.evento).then(resposta =>{
                 alert(JSON.stringify(resposta))
@@ -80,13 +81,15 @@ export default {
                 this.$router.push({path: '/eventos'})
             })
         },
-        limpaForm(evt) {
+        limpa(evt) {
             evt.preventDefault()
             /* limpa todos os campos */
             this.evento.descricao = ''
             this.evento.nome = ''
             this.evento.local = ''
             this.evento.data_evento = ''
+            this.data = ''
+            this.hora = ''
             /* limpa validações do navegador referente aos campos */
             this.show = false
             this.$nextTick(() => {
@@ -98,7 +101,13 @@ export default {
 </script>
 
 <style scoped>
-.form-register {
+.form-cadastro{
+        width: 100%;
+        max-width: 600px;
+        padding: 15px;
+        margin: auto;
+}
+/* .form-register {
     width: 100%;
     max-width: 400px;
     padding: 15px;
@@ -120,5 +129,5 @@ export default {
   .butao {
     width: 100%;
     margin: auto;
-  }
+  } */
 </style>

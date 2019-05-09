@@ -3,7 +3,7 @@
 
           <h1>Meus produtos</h1>  
           <div class="container"> 
-            <b-table striped hover fixed style="vertical-align: middle;" :items="produtos" :fields="fields" :sort-by.sync="sortBy">
+            <b-table v-if="produtos.length>0" striped hover fixed style="vertical-align: middle;" :items="produtos" :fields="fields" :sort-by.sync="sortBy">
               <template slot="acoes" slot-scope="row">
                   <div class="acoes">
                       <b-button size="sm" block @click="excluiProduto(row.item, row.index)" v-model="row.produto">Excluir</b-button>
@@ -12,19 +12,25 @@
                   </div>
               </template>
             </b-table>
+            <p v-else>
+                <router-link to="/produtos">{{linkProduto}}</router-link>
+            </p>
           </div>
 
           <h1>Meus eventos</h1>  
           <div class="container"> 
-            <b-table striped hover fixed style="vertical-align: middle;" :items="eventos" :fields="fields" :sort-by.sync="sortBy">
+            <b-table v-if="eventos.length>0" striped hover fixed style="vertical-align: middle;" :items="eventos" :fields="fields" :sort-by.sync="sortBy">
               <template slot="acoes" slot-scope="row">
                   <div class="acoes">
                       <b-button size="sm" block @click="excluiEventos(row.item, row.index)" v-model="row.produto">Excluir</b-button>
                       <b-button size="sm" block @click="alteraEventos(row.item, row.index)" v-model="row.produto">Alterar</b-button>
-                      <b-button size="sm" block @click="detalhaEventos(row.item)" v-model="row.produto">Detalhar</b-button>
+                      <b-button size="sm" block @click="detalhaEvento(row.item)" v-model="row.produto">Detalhar</b-button>
                   </div>
               </template>
             </b-table>
+            <p v-else>
+                <router-link to="/eventos">{{linkEvento}}</router-link>
+            </p>
           </div>
           
           <h1>Meus dados</h1>
@@ -104,6 +110,8 @@ export default {
             ],
             eventos: [],
             show: true,
+            linkProduto: '',
+            linkEvento: '',
         } 
     },
     
@@ -123,12 +131,18 @@ export default {
         getMeusProdutos() {
           Produtos.getMeusProdutos().then((resposta) => {
             this.produtos = resposta.data.data
+            if (resposta.data.data.length < 1) {
+                this.linkProduto = "Você não possui nenhum produto";
+            }
           })
         },
 
         getMeusEventos() {
           Eventos.getMeusEventos().then((resposta)=>{
             this.eventos = resposta.data.data
+            if (resposta.data.data.length < 1) {
+                this.linkEvento = "Você não participa de nenhum evento";
+            }
           })
         },
 
@@ -156,6 +170,10 @@ export default {
 
         detalhaProduto(produto) {
             this.$router.push({name: 'ProdutoDetalhes', params: {id: produto.id}});
+        },
+
+        detalhaEvento(evento) {
+            this.$router.push({name: 'EventoDetalhes', params: {id: evento.id}});
         },
 
     }

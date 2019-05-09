@@ -2,7 +2,7 @@
     <div class="cadastro">
         <h1>Informe seus dados</h1>
         <div class="form-cadastro">
-            <b-form @submit="cadastra" @reset="limpa">
+            <b-form @submit="cadastra" v-if="show" @reset="limpa">
                 <b-form-group>
                     
                     <b-input-group size="md" prepend="Nome">
