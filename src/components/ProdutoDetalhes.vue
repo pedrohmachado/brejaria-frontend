@@ -18,7 +18,7 @@
                 <b-tab title="Eventos relacionados">
                     <b-card-text>Total: {{numEventos}}</b-card-text>
                     <div>
-                        <p v-for="(item, index) in eventosRelacionado" :index="index++" :key="item.id">
+                        <p v-for="(item, index) in eventos" :index="index++" :key="item.id">
                             <router-link v-bind:to="'/evento/' + item.id"> {{index}}. {{ item.nome }} [ {{item.descricao}} ] </router-link>
                         </p>
                     </div>
@@ -58,11 +58,15 @@ export default {
           usuario: {
               id: '',
           },
+          evento: {
+              id: '',
+              nome: '',
+              descricao: '',
+          },
           urlImagem: '',
           selectedFile: null,
           mostraFormularioUpload: false,
           eventos:[],
-          eventosRelacionados: [],
           numEventos: 0,
 
       }
@@ -71,6 +75,7 @@ export default {
     mounted() {
         this.getProduto(),
         this.getUsuario(),
+        this.getEventosProduto(),
         this.urlImagem = URLImagemProduto + this.$route.params.id
     },
 
@@ -82,9 +87,10 @@ export default {
             })
         },
 
-        getEvento() {
-            Evento.getEventos().then((resposta)=>{
+        getEventosProduto() {
+            Evento.getEventosProduto(this.$route.params.id).then((resposta)=>{
                 this.eventos = resposta.data.data
+                this.numEventos = this.eventos.length
             })
         },
         
