@@ -1,6 +1,6 @@
 <template>
     <div class="produtos">
-        
+        <div class="infoCards">
 
         <h1>Produtos</h1>
         <p>descrição produtos</p>
@@ -31,13 +31,13 @@
 
             </b-card-group>
         </div>
-
+        </div>
     </div>
 </template>
 
 <script>
 import Produto from '../services/produtos'
-import { URLImagem } from '../services/config'
+import { URLImagemProduto } from '../services/config'
 
 export default {
     data() {
@@ -77,12 +77,16 @@ export default {
         },
 
         getImagem(produto) {
-            return produto.urlImagem = URLImagem + produto.id
+            return produto.urlImagem = URLImagemProduto + produto.id
         },
     }
 }
 </script>
 
 <style scoped>
-
+.infoCards {
+        width: 100%;
+        margin: auto;
+        padding: 20px;
+    }
 </style>

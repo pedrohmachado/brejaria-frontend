@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>{{ titulo }}</h1>
+    <p>{{ msg }}</p>
+    
     <!-- <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -45,6 +47,7 @@
 export default {
   name: 'helloWorld',
   props: {
+    titulo: String,
     msg: String
   },
   data() {

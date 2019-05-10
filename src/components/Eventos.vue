@@ -1,5 +1,6 @@
 <template>
     <div class="eventos">
+        <div class="infoCards">
         
 
         <h1>Eventos</h1>
@@ -19,7 +20,7 @@
 
         <div class="mt-3">
             <b-card-group columns class="mb-3">
-                <b-card v-for="item in eventos" v-bind:key="item.id" img-src="https://picsum.photos/300/300/?image=41" img-top>
+                <b-card v-for="item in eventos" v-bind:key="item.id" :img-src="getImagem(item)" img-fluid img-top>
                     <b-card-title>{{item.nome}}</b-card-title>
                     <b-card-sub-title>
                         <img class="icon" src="../assets/local.png">
@@ -35,11 +36,13 @@
             </b-card-group>
         </div>
 
+        </div>
     </div>
 </template>
 
 <script>
 import Evento from '../services/eventos'
+import { URLImagemEvento } from '../services/config'
 
 export default {
     data() {
@@ -56,6 +59,7 @@ export default {
                 usuario_id: '',
                 participantes: [],
                 usuarioParticipante: '',
+                urlImagem: '',
             },
 
             eventos: [],
@@ -87,6 +91,10 @@ export default {
         detalhaEvento(evento) {
             this.$router.push({name: 'EventoDetalhes', params: {id: evento.id}});
         },
+
+        getImagem(evento) {
+            return evento.urlImagem = URLImagemEvento + evento.id
+        },
     }
 }
 </script>
@@ -95,5 +103,11 @@ export default {
     .icon{
         height: 16px;
         width: 16px;
+    }
+
+    .infoCards {
+        width: 100%;
+        margin: auto;
+        padding: 20px;
     }
 </style>

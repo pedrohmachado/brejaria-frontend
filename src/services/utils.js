@@ -19,5 +19,11 @@ export default {
         })
     },
 
+    getImagemEvento:(IDEvento) => {
+        return instance.get('imagem/evento/' + IDEvento, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token')}
+        })
+    },
+
 
 }

@@ -45,12 +45,19 @@
                   <b-form-group label-for="emailInput" description="Seu e-mail não será compartilhado com ninguém.">
                       
                       <b-input-group id="emailInput" size="md" prepend="E-mail">
-                          <b-input v-model="usuario.email" required size="md" type="email" placeholder="exemplo@brejaria.com"/>
+                          <b-input v-model="usuario.email" required size="md" disabled type="email" placeholder="exemplo@brejaria.com"/>
                       </b-input-group>
                   </b-form-group>
                   <b-form-group>
                       
-                      <b-input-group size="md" prepend="Senha">
+                      <b-input-group size="md" prepend="Senha atual">
+                          <b-input v-model="usuario.senha" required size="md" type="password" placeholder="Digite sua senha atual"/>
+                      </b-input-group>
+                  </b-form-group>
+
+                  <b-form-group>
+                      
+                      <b-input-group size="md" prepend="Nova senha">
                           <b-input v-model="usuario.senha" required size="md" type="password" placeholder="Senha com mais de 6 caracteres"/>
                       </b-input-group>
                   </b-form-group>

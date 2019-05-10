@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <img alt="Brejaria Logo" src="../assets/logo.png">
-        <HelloWorld msg="Bem-vindo à Brejaria"/>
+        <HelloWorld titulo="Bem-vindo à Brejaria" msg="Você já participou de x eventos e avaliou x produtos!"/>
     </div>
 </template>
 
