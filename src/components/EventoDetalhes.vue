@@ -15,9 +15,15 @@
                         <p>Local: {{evento.local}}</p>
                         <p>Data do evento: {{evento.data_evento}}</p>
                         <p><small>Data de criação: {{evento.data_criacao}}</small></p>
-                        <p>Participantes: {{numParticipantes}}</p>
+                        <p>Participantes: {{evento.participantes.length}}</p>
                         <p>Produtos: {{numProdutos}}</p>
-                        <p>Ranking: </p>
+                        <p>Avaliação média:
+                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" read-only inline increment="0.1" v-model="avaliacaoMedia"></star-rating>
+                        </p>
+                        
+                        <p>Sua avaliação:
+                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" v-model="avaliacaoEvento.avaliacao" inline increment="0.5" @rating-selected="avaliaEvento"></star-rating>
+                        </p>
                     </b-container>
                 </b-tab>
                 <b-tab title="Produtos">
@@ -30,10 +36,13 @@
         
                 </b-tab>
                 <b-tab title="Participantes">
-                    <b-card-text>Total: {{numParticipantes}}</b-card-text>
+                    <b-card-text>Total: {{evento.participantes.length}}</b-card-text>
+                        
                         <p v-for="(item, index) in evento.participantes" :index="index++" :key="item.id">
                             {{index}}. {{item.nome}}
                         </p>
+                        
+                            
                         <div v-show="!usuarioParticipante">
                             <b-button v-model="evento" @click="adicionaParticipante(evento)">Participar</b-button>
                         </div>
@@ -62,8 +71,13 @@ import Usuario from '../services/usuario'
 import Produto from '../services/produtos'
 import { URLImagemEvento } from '../services/config'
 import Util from "../services/utils"
+import Avaliacao from '../services/avaliacoes'
+import StarRating from 'vue-star-rating'
 
 export default {    
+    components: {
+        StarRating
+    },
     data() {
         return{
             evento: {
@@ -89,9 +103,11 @@ export default {
             urlImagem: '',
             selectedFile: null,
             mostraFormularioUpload: false,
-            numParticipantes: 0,
             numProdutos: 0,
-
+            avaliacaoEvento: {
+                avaliacao: 0,
+            },
+            avaliacaoMedia: 0,
         }
     },
 
@@ -102,6 +118,26 @@ export default {
     },
 
     methods: {
+        avaliaEvento(avaliacao) {
+            this.avaliacaoEvento.avaliacao = avaliacao
+            Avaliacao.avaliaEvento(this.evento.id, this.avaliacaoEvento).then(()=>{
+                this.getAvaliacaoUsuarioEvento(this.evento)
+                this.getAvaliacaoMediaEvento(this.evento)
+            })
+        },
+
+        getAvaliacaoMediaEvento(evento) {
+            Avaliacao.getAvaliacaoMediaEvento(evento.id).then((resposta) => {
+                this.avaliacaoMedia = resposta.data.data.avaliacaoMediaEvento
+            })
+        },
+
+        getAvaliacaoUsuarioEvento(evento) {
+            Avaliacao.getAvaliacaoUsuarioEvento(evento.id).then((resposta) => {
+                this.avaliacaoEvento.avaliacao = resposta.data.data.avaliacaoEventoUsuario.avaliacao
+            })
+        },
+
         verificaUsuarioEditor(evento, usuario) {
             if (JSON.stringify(evento.usuario_id) == JSON.stringify(usuario.id)) {
                 this.mostraFormularioUpload = true;
@@ -132,10 +168,11 @@ export default {
         getEvento() {
             Evento.getEvento(this.$route.params.id).then((resposta) => {
                 this.evento = resposta.data.data;
-                this.validaParticipacao(this.evento, this.usuario);
                 this.getProdutosEvento();
                 this.verificaUsuarioEditor(this.evento, this.usuario)
-                this.numParticipantes = this.evento.participantes.length
+                this.getAvaliacaoMediaEvento(this.evento)
+                this.getAvaliacaoUsuarioEvento(this.evento)
+                this.validaParticipacao(this.evento, this.usuario)
             })
         },
 
@@ -148,19 +185,22 @@ export default {
 
         adicionaParticipante(evento) {
             Evento.adicionaParticipante(evento.id).then(() => {
-                this.getEvento();
+                this.getEvento()
             })
         },
 
         removeParticipante(evento) {
             Evento.removeParticipante(evento.id).then(()=>{
-                this.getEvento();
+                this.getEvento()
             })
         },
 
-        validaParticipacao(evento, usuario) {
+        validaParticipacao(evento, usuario) { 
             if(JSON.stringify(evento.participantes).includes(JSON.stringify(usuario))){
                 this.usuarioParticipante = true;
+            } else if (JSON.stringify(evento.participantes) == JSON.stringify(null)){
+                this.evento.participantes = []
+                this.usuarioParticipante = false;
             } else {
                 this.usuarioParticipante = false;
             }

@@ -12,7 +12,14 @@
                     <b-img class="img" thumbnail fluid v-bind:src="urlImagem"/>
                     <b-container style="padding: 20px;">
                         <p>Descrição: {{produto.descricao}}</p>
-                        <p>Ranking: </p>
+                        <p>Eventos relacionados: {{numEventos}}</p>
+                        <p>Avaliação média:
+                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" read-only inline increment="0.1" v-model="avaliacaoMedia"></star-rating>
+                        </p>
+                        
+                        <p>Sua avaliação:
+                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" v-model="avaliacaoProduto.avaliacao" inline increment="0.5" @rating-selected="avaliaProduto"></star-rating>
+                        </p>
                     </b-container>
                 </b-tab>
                 <b-tab title="Eventos relacionados">
@@ -44,9 +51,13 @@ import { URLImagemProduto } from '../services/config'
 import Util from "../services/utils"
 import Usuario from '../services/usuario'
 import Evento from '../services/eventos'
-
+import Avaliacao from '../services/avaliacoes'
+import StarRating from 'vue-star-rating'
 
 export default {
+    components: {
+        StarRating
+    },
     data() {
       return {
           produto: {
@@ -68,7 +79,10 @@ export default {
           mostraFormularioUpload: false,
           eventos:[],
           numEventos: 0,
-
+          avaliacaoMedia: 0,
+          avaliacaoProduto: {
+              avaliacao: 0,
+          },
       }
     }, 
     
@@ -80,7 +94,28 @@ export default {
     },
 
     methods: {
-         getUsuario() {
+
+        avaliaProduto(avaliacao) {
+            this.avaliacaoProduto.avaliacao = avaliacao
+            Avaliacao.avaliaProduto(this.produto.id, this.avaliacaoProduto).then(()=>{
+                this.getAvaliacaoUsuarioProduto(this.produto)
+                this.getAvaliacaoMediaProduto(this.produto)
+            })
+        },
+
+        getAvaliacaoUsuarioProduto(produto) {
+            Avaliacao.getAvaliacaoUsuarioProduto(produto.id).then((resposta) => {
+                this.avaliacaoProduto.avaliacao = resposta.data.data.avaliacaoProdutoUsuario.avaliacao
+            })
+        },
+
+        getAvaliacaoMediaProduto(produto) {
+            Avaliacao.getAvaliacaoMediaProduto(produto.id).then((resposta) => {
+                this.avaliacaoMedia = resposta.data.data.avaliacaoMediaProduto
+            })
+        },
+        
+        getUsuario() {
             Usuario.getPerfil().then((resposta) => {
                 this.usuario = resposta.data.data;
                 this.verificaUsuario(this.produto, this.usuario);
@@ -105,6 +140,9 @@ export default {
         getProduto() {
              Produto.getProduto(this.$route.params.id).then((resposta) => {
                 this.produto = resposta.data.data;
+                this.getAvaliacaoMediaProduto(this.produto)
+                this.getAvaliacaoUsuarioProduto(this.produto)
+                this.getAvaliacaoMediaProduto(this.produto)
             })
         },
 
