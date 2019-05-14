@@ -3,12 +3,14 @@
 
           <h1>Meus produtos</h1>  
           <div class="container"> 
-            <b-table v-if="produtos.length>0" striped hover fixed style="vertical-align: middle;" :items="produtos" :fields="fields" :sort-by.sync="sortBy">
+            <b-table head-variant="dark" dark striped hover v-if="produtos.length>0" :items="produtos" :fields="fields" :sort-by.sync="sortBy">
               <template slot="acoes" slot-scope="row">
                   <div class="acoes">
-                      <b-button size="sm" block @click="excluiProduto(row.item, row.index)" v-model="row.produto">Excluir</b-button>
-                      <b-button size="sm" block @click="alteraProduto(row.item, row.index)" v-model="row.produto">Alterar</b-button>
-                      <b-button size="sm" block @click="detalhaProduto(row.item)" v-model="row.produto">Detalhar</b-button>
+                      <b-button-group >
+                        <b-button size="sm" variant="warning"  @click="excluiProduto(row.item, row.index)" v-model="row.produto">Excluir</b-button>
+                        <b-button size="sm"  @click="alteraProduto(row.item, row.index)" v-model="row.produto">Alterar</b-button>
+                        <b-button size="sm" variant="info"  @click="detalhaProduto(row.item)" v-model="row.produto">Detalhar</b-button>
+                      </b-button-group>
                   </div>
               </template>
             </b-table>
@@ -19,12 +21,32 @@
 
           <h1>Meus eventos</h1>  
           <div class="container"> 
-            <b-table v-if="eventos.length>0" striped hover fixed style="vertical-align: middle;" :items="eventos" :fields="fields" :sort-by.sync="sortBy">
+            <b-table head-variant="dark" dark striped hover responsive v-if="eventos.length>0" style="vertical-align: middle;" :items="eventos" :fields="fields" :sort-by.sync="sortBy">
               <template slot="acoes" slot-scope="row">
                   <div class="acoes">
-                      <b-button size="sm" block @click="excluiEventos(row.item, row.index)" v-model="row.produto">Excluir</b-button>
-                      <b-button size="sm" block @click="alteraEventos(row.item, row.index)" v-model="row.produto">Alterar</b-button>
-                      <b-button size="sm" block @click="detalhaEvento(row.item)" v-model="row.produto">Detalhar</b-button>
+                    <b-button-group >
+                      <b-button size="sm" variant="warning" @click="excluiEventos(row.item, row.index)" v-model="row.produto">Excluir</b-button>
+                      <b-button size="sm" @click="alteraEventos(row.item, row.index)" v-model="row.produto">Alterar</b-button>
+                      <b-button size="sm" variant="info" @click="detalhaEvento(row.item)" v-model="row.produto">Detalhar</b-button>
+                    </b-button-group>
+                  </div>
+              </template>
+            </b-table>
+            <p v-else>
+                <router-link to="/eventos">{{linkEvento}}</router-link>
+            </p>
+          </div>
+
+          <h1>Eventos inscritos</h1>  
+          <div class="container"> 
+            <b-table head-variant="dark" dark striped hover responsive v-if="eventosInscritos.length>0" :items="eventosInscritos" :fields="fields" :sort-by.sync="sortBy">
+              <template slot="acoes" slot-scope="row">
+                  <div class="acoes">
+                    <b-button-group >
+                      <b-button size="sm" variant="warning" @click="excluiEventos(row.item, row.index)" v-model="row.produto">Excluir</b-button>
+                      <b-button size="sm" @click="alteraEventos(row.item, row.index)" v-model="row.produto">Alterar</b-button>
+                      <b-button size="sm" variant="info" @click="detalhaEvento(row.item)" v-model="row.produto">Detalhar</b-button>
+                    </b-button-group>
                   </div>
               </template>
             </b-table>
@@ -101,7 +123,7 @@ export default {
               nome: '',
               descricao: '',
             },
-            sortBy: 'id',
+            sortBy: 'nome',
             produto: {
                 id: '',
                 nome: '',
@@ -109,13 +131,16 @@ export default {
                 usuario_id: '',
             },
             produtos: [],
-            fields: [{key: 'id', sortable: true},
-                'nome',
+            fields: 
+            //[{key: 'id', sortable: true},
+            [{key: 'nome', sortable: true},
+                // 'nome',
                 'descricao',
-                'usuario_id',
+                // 'usuario_id',
                 'acoes'
             ],
             eventos: [],
+            eventosInscritos: [],
             show: true,
             linkProduto: '',
             linkEvento: '',
@@ -126,8 +151,15 @@ export default {
         this.getPerfil()
         this.getMeusProdutos()
         this.getMeusEventos()
+        this.getEventosInscritos()
     },
     methods: {
+        getEventosInscritos() {
+            Eventos.getEventosInscritos().then((resposta) => {
+                this.eventosInscritos = resposta.data.data.eventosInscritos
+            })
+        },
+
         getPerfil() {
             Usuario.getPerfil().then((resposta) =>{
                 this.usuario = resposta.data.data
@@ -197,7 +229,7 @@ export default {
 
 .container{
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     padding: 15px;
     margin: auto;
 }

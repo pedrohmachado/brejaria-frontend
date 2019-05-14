@@ -14,11 +14,11 @@
                         <p>Descrição: {{produto.descricao}}</p>
                         <p>Eventos relacionados: {{numEventos}}</p>
                         <p>Avaliação média:
-                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" read-only inline increment="0.1" v-model="avaliacaoMedia"></star-rating>
+                            <star-rating :star-size="25" :increment="0.1" glow-color="#2c3e50" v-bind:show-rating="false" read-only inline v-model="avaliacaoMedia"></star-rating>
                         </p>
                         
                         <p>Sua avaliação:
-                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" v-model="avaliacaoProduto.avaliacao" inline increment="0.5" @rating-selected="avaliaProduto"></star-rating>
+                            <star-rating :star-size="25" :increment="0.5" glow-color="#2c3e50" v-bind:show-rating="false" v-model="avaliacaoProduto.avaliacao" inline  @rating-selected="avaliaProduto"></star-rating>
                         </p>
                     </b-container>
                 </b-tab>
@@ -35,8 +35,8 @@
                 <b-tab v-if="mostraFormularioUpload" title="Editar">
                     <form v-if="mostraFormularioUpload" enctype="multipart/form-data" @submit="onUpload"> 
                         <div class="d-inline-block w-50">
-                        <b-form-file placeholder="Selecione um arquivo..." accept="image/png" @change="onFileSelected"></b-form-file>
-                        <b-button type="submit">Upload</b-button>
+                            <b-form-file placeholder="Selecione um arquivo..." accept="image/png" @change="onFileSelected"></b-form-file>
+                            <b-button type="submit">Upload</b-button>
                         </div>
                     </form>
                 </b-tab>
@@ -87,8 +87,8 @@ export default {
     }, 
     
     mounted() {
-        this.getProduto(),
         this.getUsuario(),
+        this.getProduto(),
         this.getEventosProduto(),
         this.urlImagem = URLImagemProduto + this.$route.params.id
     },
@@ -166,7 +166,7 @@ export default {
         max-width: 700px;
         width: 100%;
         margin: auto;
-        margin-bottom: 200px !important;
+        margin-bottom: 50px !important;
         padding: 20px;
     }
 

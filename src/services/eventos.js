@@ -44,5 +44,11 @@ export default {
         return instance.get('produto/' + IDProduto + '/eventos', {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
-    }
+    },
+
+    getEventosInscritos:() => {
+        return instance.get('eventos/eu', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    },
 }

@@ -9,6 +9,9 @@
             <b-tabs card>
                 <b-tab title="Info" active>
                     <b-card-text>Informações sobre {{evento.nome}}</b-card-text>
+                    <p>Avaliação média:</p>
+                    <star-rating :star-size="25" :increment="0.1" glow-color="#2c3e50" v-bind:show-rating="false" read-only inline v-model="avaliacaoMedia"></star-rating>
+                    <p></p>
                     <b-img class="img" thumbnail fluid v-bind:src="urlImagem"/>
                     <b-container style="padding: 20px;">
                         <p>Descrição: {{evento.descricao}}</p>
@@ -17,13 +20,10 @@
                         <p><small>Data de criação: {{evento.data_criacao}}</small></p>
                         <p>Participantes: {{evento.participantes.length}}</p>
                         <p>Produtos: {{numProdutos}}</p>
-                        <p>Avaliação média:
-                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" read-only inline increment="0.1" v-model="avaliacaoMedia"></star-rating>
-                        </p>
                         
-                        <p>Sua avaliação:
-                            <star-rating star-size="20" glow-color="#2c3e50" v-bind:show-rating="false" v-model="avaliacaoEvento.avaliacao" inline increment="0.5" @rating-selected="avaliaEvento"></star-rating>
-                        </p>
+                        
+                        <p>Sua avaliação:</p>
+                        <star-rating :star-size="25" :increment="0.5" glow-color="#2c3e50" v-bind:show-rating="false" v-model="avaliacaoEvento.avaliacao" inline @rating-selected="avaliaEvento"></star-rating>
                     </b-container>
                 </b-tab>
                 <b-tab title="Produtos">
@@ -169,10 +169,10 @@ export default {
             Evento.getEvento(this.$route.params.id).then((resposta) => {
                 this.evento = resposta.data.data;
                 this.getProdutosEvento();
-                this.verificaUsuarioEditor(this.evento, this.usuario)
                 this.getAvaliacaoMediaEvento(this.evento)
                 this.getAvaliacaoUsuarioEvento(this.evento)
                 this.validaParticipacao(this.evento, this.usuario)
+                this.verificaUsuarioEditor(this.evento, this.usuario)
             })
         },
 
