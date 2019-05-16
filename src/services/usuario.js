@@ -16,9 +16,13 @@ export default {
         })
     },
 
-    altera:(usuario) => {
-        return instance.put('usuario/alterar', usuario, {
+    altera:(usuario, novaSenha) => {
+        return instance.put('usuario/'+novaSenha+'/alterar', usuario, {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
+    },
+
+    getPerfilUsuario:() => {
+
     }
 }

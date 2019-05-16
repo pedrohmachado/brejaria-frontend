@@ -70,6 +70,16 @@ let router = new Router ({
       component: () => import('./components/ProdutoDetalhes.vue')
     },
     {
+      path: '/produtor/:id',
+      name: 'ProdutorDetalhes',
+      component: () => import('./components/ProdutorDetalhes.vue')
+    },
+    {
+      path: '/produtores',
+      name: 'Produtores',
+      component: () => import('./components/Produtores.vue')
+    },
+    {
       path: '*',
       redirect: '/home'
     }

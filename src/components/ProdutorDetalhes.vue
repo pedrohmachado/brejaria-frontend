@@ -1,12 +1,13 @@
 <template>
-  <div class="sobre">
-    <p>sobre</p>
-  </div>
+    <p>teste</p>
 </template>
 
 <script>
-export default {};
+export default {
+    
+}
 </script>
 
 <style scoped>
+
 </style>
