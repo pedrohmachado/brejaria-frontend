@@ -69,13 +69,14 @@
         </b-tab>
         <b-tab v-if="mostraFormularioUpload" title="Editar">
           <form v-if="mostraFormularioUpload" enctype="multipart/form-data" @submit="onUpload">
-            <div class="d-inline-block w-50">
+            <div>
               <!-- <input type="file" @change="onFileSelected" /> -->
               <b-form-file
                 placeholder="Selecione um arquivo..."
                 accept="image/png"
                 @change="onFileSelected"
               ></b-form-file>
+              <p></p>
               <b-button type="submit">Upload</b-button>
             </div>
           </form>

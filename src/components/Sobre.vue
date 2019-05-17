@@ -1,6 +1,7 @@
 <template>
   <div class="sobre">
-    <p>sobre</p>
+    <h1>O que é a Brejaria?</h1>
+    
   </div>
 </template>
 
