@@ -3,7 +3,7 @@
       <h3></h3>
      <h1>{{usuario.nome}}</h1>
 
-    <b-card bg-variant="dark" text-variant="white" class="info-evento" no-body>
+    <b-card bg-variant="dark" text-variant="white" class="info-produtor" no-body>
       <b-tabs card>
         <b-tab title="Info" active>
           <b-card-text>Informações sobre {{usuario.nome}}</b-card-text>
@@ -127,7 +127,7 @@ export default {
 </script>
 
 <style scoped>
-.info-evento {
+.info-produtor {
   max-width: 700px;
   width: 100%;
   margin: auto;
