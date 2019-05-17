@@ -22,7 +22,15 @@ export default {
         })
     },
 
-    getPerfilUsuario:() => {
+    getProdutores:() => {
+        return instance.get('produtores', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    },
 
+    getProdutor: (IDUsuario) => {
+        return instance.get('produtor/' + IDUsuario, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
     }
 }

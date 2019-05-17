@@ -14,6 +14,12 @@ export default {
         })
     },
 
+    getProdutosProdutor:(IDProdutor) => {
+        return instance.get('produtor/' + IDProdutor + '/produtos', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    },
+
     getMeusProdutos:() => {
         return instance.get('eu/produtos', {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }

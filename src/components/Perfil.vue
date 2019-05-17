@@ -175,7 +175,6 @@
           <b-input-group size="md" prepend="Nova senha">
             <b-input
               v-model="novaSenha"
-              required
               size="md"
               type="password"
               placeholder="Senha com mais de 6 caracteres"
@@ -318,7 +317,6 @@ export default {
     },
 
     getMeusProdutos(usuario) {
-      alert(JSON.stringify(usuario))
       if (usuario.perfil == "consumidor") {
         this.linkProduto = "Você não é produtor";
       } else {
@@ -348,6 +346,9 @@ export default {
     },
 
     altera() {
+      if (this.novaSenha == "") {
+        this.novaSenha = this.usuario.senha;
+      }
       this.definePerfil(this.perfil, this.usuario);
       Usuario.altera(this.usuario, this.novaSenha).then(resposta => {
         this.usuario = resposta.data.data;

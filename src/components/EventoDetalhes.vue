@@ -135,6 +135,7 @@ export default {
     this.getUsuario();
     this.getEvento();
     this.urlImagem = URLImagemEvento + this.$route.params.id;
+    this.verificaUsuarioEditor(this.evento, this.usuario);
   },
 
   methods: {
@@ -182,6 +183,7 @@ export default {
     getUsuario() {
       Usuario.getPerfil().then(resposta => {
         this.usuario = resposta.data.data;
+        this.verificaUsuarioEditor(this.evento, this.usuario);
       });
     },
 

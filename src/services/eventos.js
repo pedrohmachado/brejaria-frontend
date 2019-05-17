@@ -51,4 +51,10 @@ export default {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
     },
+
+    getEventosProdutor:(IDProdutor) => {
+        return instance.get('produtor/' + IDProdutor + '/eventos', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    }
 }

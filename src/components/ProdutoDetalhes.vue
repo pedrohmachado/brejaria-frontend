@@ -11,6 +11,11 @@
             <p>Descrição: {{produto.descricao}}</p>
             <p>Eventos relacionados: {{numEventos}}</p>
             <p>
+              Produtor:
+              <router-link v-bind:to="'/produtor/' + produtor.id">{{produtor.nome}}</router-link>
+            </p>
+
+            <p>
               Avaliação média:
               <star-rating
                 :star-size="25"
@@ -87,7 +92,9 @@ export default {
         usuario_id: ""
       },
       usuario: {
-        id: ""
+        id: "",
+        nome: "",
+        perfil: ""
       },
       evento: {
         id: "",
@@ -102,6 +109,10 @@ export default {
       avaliacaoMedia: 0,
       avaliacaoProduto: {
         avaliacao: 0
+      },
+      produtor: {
+        id: "",
+        nome: ""
       }
     };
   },
@@ -111,9 +122,16 @@ export default {
       this.getProduto(),
       this.getEventosProduto(),
       (this.urlImagem = URLImagemProduto + this.$route.params.id);
+      this.verificaUsuario(this.produto, this.usuario);
   },
 
   methods: {
+    getProdutor(produto) {
+      Usuario.getProdutor(produto.usuario_id).then(resposta => {
+        this.produtor = resposta.data.data.usuario;
+      });
+    },
+
     avaliaProduto(avaliacao) {
       this.avaliacaoProduto.avaliacao = avaliacao;
       Avaliacao.avaliaProduto(this.produto.id, this.avaliacaoProduto).then(
@@ -140,6 +158,7 @@ export default {
     getUsuario() {
       Usuario.getPerfil().then(resposta => {
         this.usuario = resposta.data.data;
+        // this.getProduto();
         this.verificaUsuario(this.produto, this.usuario);
       });
     },
@@ -148,6 +167,7 @@ export default {
       Evento.getEventosProduto(this.$route.params.id).then(resposta => {
         this.eventos = resposta.data.data;
         this.numEventos = this.eventos.length;
+        this.verificaUsuario(this.produto, this.usuario);
       });
     },
 
@@ -165,6 +185,8 @@ export default {
         this.getAvaliacaoMediaProduto(this.produto);
         this.getAvaliacaoUsuarioProduto(this.produto);
         this.getAvaliacaoMediaProduto(this.produto);
+        this.getProdutor(this.produto);
+        this.verificaUsuario(this.produto, this.usuario);
       });
     },
 
