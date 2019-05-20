@@ -5,21 +5,23 @@
       <p>descrição produtos</p>
 
       <b-button to="/produto/novo">Crie seu produto</b-button>
+      <p></p>
 
-      <!-- <b-table striped hover fixed style="vertical-align: middle;" :items="produtos" :fields="fields" :sort-by.sync="sortBy">
-            <template slot="acoes" slot-scope="row">
-                <div class="acoes">
-                    <b-button @click="excluiProduto(row.item, row.index)" v-model="row.produto">Excluir</b-button>
-                    <b-button @click="alteraProduto(row.item, row.index)" v-model="row.produto">Alterar</b-button>
-                    <b-button @click="detalhaProduto(row.item)" v-model="row.produto">Detalhar</b-button>
-                </div>
-            </template>
-      </b-table>-->
+      <b-form>
+        <b-input-group size="lg" prepend="Busca">
+          <b-form-input v-model="busca" placeholder="Faça um consulta pelo nome do produto"></b-form-input>
+          <b-input-group-append>
+            <b-button @click="filtra()">
+              <v-icon>mdi-magnify</v-icon>
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form>
 
       <div class="mt-3">
         <b-card-group columns class="mb-3">
           <b-card
-            v-for="item in produtos"
+            v-for="item in produtosFiltrados"
             v-bind:key="item.id"
             :img-src="getImagem(item)"
             img-fluid
@@ -29,7 +31,7 @@
             <b-card-text>{{item.descricao}}</b-card-text>
             <b-button size="sm" @click="detalhaProduto(item)">Detalhes</b-button>
             <div slot="footer">
-              <small class="text-muted">{{item.usuario_id}}</small>
+              <small class="text-muted">{{getNomeProdutor(item)}}</small>
             </div>
           </b-card>
         </b-card-group>
@@ -41,6 +43,7 @@
 <script>
 import Produto from "../services/produtos";
 import { URLImagemProduto } from "../services/config";
+import Usuario from "../services/usuario";
 
 export default {
   data() {
@@ -51,16 +54,24 @@ export default {
         nome: "",
         descricao: "",
         usuario_id: "",
-        urlImagem: ""
+        urlImagem: "",
+        nome_produtor: ""
       },
       produtos: [],
+      produtores: [],
+      produtosFiltrados: [],
+      produtor: {
+        id: "",
+        nome: ""
+      },
       fields: [
         { key: "id", sortable: true },
         "nome",
         "descricao",
         "usuario_id",
         "acoes"
-      ]
+      ],
+      busca: '',
     };
   },
 
@@ -69,10 +80,27 @@ export default {
   },
 
   methods: {
+    getProdutores() {
+      Usuario.getProdutores().then(resposta => {
+        this.produtores = resposta.data.data.usuarios;
+      });
+    },
+
     getProdutos() {
       Produto.getProdutos().then(resposta => {
         this.produtos = resposta.data.data;
+        this.produtosFiltrados = this.produtos
+        this.getProdutores();
       });
+    },
+
+    getNomeProdutor(produto) {
+      this.produtores.forEach(produtor => {
+        if(produtor.id == produto.usuario_id) {
+          produto.nome_produtor = produtor.nome
+        }
+      });
+      return produto.nome_produtor
     },
 
     detalhaProduto(produto) {
@@ -84,6 +112,15 @@ export default {
 
     getImagem(produto) {
       return (produto.urlImagem = URLImagemProduto + produto.id);
+    },
+
+    filtra() {
+      this.produtosFiltrados = [];
+      this.produtos.forEach(produto => {
+        if (produto.nome.toLowerCase().indexOf(this.busca.toLowerCase()) > -1) {
+          this.produtosFiltrados.push(produto);
+        }
+      });
     }
   }
 };

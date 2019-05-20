@@ -55,15 +55,48 @@
 
         <b-tab v-if="mostraFormularioUpload" title="Editar">
           <form v-if="mostraFormularioUpload" enctype="multipart/form-data" @submit="onUpload">
-            <div class="d-inline-block w-50">
+            <div>
               <b-form-file
                 placeholder="Selecione um arquivo..."
                 accept="image/png"
                 @change="onFileSelected"
               ></b-form-file>
+              <p></p>
               <b-button type="submit">Upload</b-button>
+              <p></p>
             </div>
           </form>
+          <div class="form-cadastro">
+            <b-form @submit="altera" v-if="show" @reset="limpa">
+              <b-form-group>
+                <b-input-group size="md" prepend="Nome">
+                  <b-input
+                    v-model="produto.nome"
+                    required
+                    size="md"
+                    type="text"
+                    placeholder="Digite o nome do seu produto"
+                  ></b-input>
+                </b-input-group>
+              </b-form-group>
+              <b-form-group>
+                <b-input-group size="md" prepend="Descrição">
+                  <b-form-textarea
+                    v-model="produto.descricao"
+                    required
+                    size="md"
+                    type="email"
+                    placeholder="Faça as pessoas se interessarem pelo seu produto"
+                  ></b-form-textarea>
+                </b-input-group>
+              </b-form-group>
+
+              <b-btn-group>
+                <b-button variant="success" type="submit">Enviar</b-button>
+                <b-button variant="info" type="reset">Limpar</b-button>
+              </b-btn-group>
+            </b-form>
+          </div>
         </b-tab>
       </b-tabs>
     </b-card>
@@ -113,7 +146,8 @@ export default {
       produtor: {
         id: "",
         nome: ""
-      }
+      },
+      show: true
     };
   },
 
@@ -122,7 +156,7 @@ export default {
       this.getProduto(),
       this.getEventosProduto(),
       (this.urlImagem = URLImagemProduto + this.$route.params.id);
-      this.verificaUsuario(this.produto, this.usuario);
+    this.verificaUsuario(this.produto, this.usuario);
   },
 
   methods: {
@@ -200,7 +234,10 @@ export default {
       Util.uploadImagemProduto(this.produto.id, fd).then(() => {
         location.reload();
       });
-    }
+    },
+
+    altera() {},
+    limpa() {}
   }
 };
 </script>

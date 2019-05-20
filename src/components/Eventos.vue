@@ -5,7 +5,18 @@
       <p>descrição eventos</p>
 
       <b-button to="/evento/novo">Crie seu evento</b-button>
+      <p></p>
 
+      <b-form>
+        <b-input-group size="lg" prepend="Busca">
+          <b-form-input v-model="busca" placeholder="Faça um consulta pelo nome do evento"></b-form-input>
+          <b-input-group-append>
+            <b-button @click="filtra()">
+              <v-icon>mdi-magnify</v-icon>
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form>
       <!-- <b-table striped hover :items="eventos" :fields="fields" :sort-by.sync="sortBy" responsive="sm">
             <template slot="acoes" slot-scope="row">
                 <div class="acoes">  
@@ -19,7 +30,7 @@
       <div class="mt-3">
         <b-card-group columns class="mb-3">
           <b-card
-            v-for="item in eventos"
+            v-for="item in eventosFiltrados"
             v-bind:key="item.id"
             :img-src="getImagem(item)"
             img-fluid
@@ -65,6 +76,8 @@ export default {
       },
 
       eventos: [],
+      eventosFiltrados: [],
+      busca: "",
       fields: [
         { key: "id", sortable: true },
         "nome",
@@ -88,6 +101,7 @@ export default {
     getEventos() {
       Evento.getEventos().then(resposta => {
         this.eventos = resposta.data.data;
+        this.eventosFiltrados = this.eventos;
       });
     },
 
@@ -97,6 +111,15 @@ export default {
 
     getImagem(evento) {
       return (evento.urlImagem = URLImagemEvento + evento.id);
+    },
+
+    filtra() {
+      this.eventosFiltrados = [];
+      this.eventos.forEach(evento => {
+        if (evento.nome.toLowerCase().indexOf(this.busca.toLowerCase()) > -1) {
+          this.eventosFiltrados.push(evento);
+        }
+      });
     }
   }
 };

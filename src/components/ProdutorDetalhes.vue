@@ -13,6 +13,7 @@
             <p>Perfil: {{usuario.perfil}}</p>
             <p>Eventos: {{eventos.length}}</p>
             <p>Produtos: {{produtos.length}}</p>
+            <p>Contato: {{usuario.contato}}</p>
           </b-container>
         </b-tab>
         <b-tab title="Produtos">
@@ -83,6 +84,7 @@ export default {
                id: '',
                nome: '',
                perfil: '',
+               contato: '',
            },
            produtos: [],
            produto: {

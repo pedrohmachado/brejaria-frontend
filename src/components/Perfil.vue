@@ -96,7 +96,7 @@
         hover
         responsive
         small
-        v-if="eventosInscritos.length != null"
+        v-if="eventosInscritos.length > 0"
         :items="eventosInscritos"
         :fields="fieldsEvento"
         :sort-by.sync="sortBy"
@@ -157,6 +157,17 @@
               type="email"
               placeholder="exemplo@brejaria.com"
             />
+          </b-input-group>
+        </b-form-group>
+         <b-form-group label-for="contatoInput" description>
+          <b-input-group id="contatoInput" size="md" prepend="Contato">
+            <b-input
+              v-model="usuario.contato"
+              required
+              size="md"
+              type="text"
+              placeholder="(12) 93456-7890, exemplo@contato.com, www.exemplo.com/contato etc..."
+            ></b-input>
           </b-input-group>
         </b-form-group>
         <b-form-group>

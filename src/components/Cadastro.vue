@@ -28,6 +28,17 @@
             ></b-input>
           </b-input-group>
         </b-form-group>
+        <b-form-group label-for="contatoInput" description>
+          <b-input-group id="contatoInput" size="md" prepend="Contato">
+            <b-input
+              v-model="usuario.contato"
+              required
+              size="md"
+              type="text"
+              placeholder="(12) 93456-7890, exemplo@contato.com, www.exemplo.com/contato etc..."
+            ></b-input>
+          </b-input-group>
+        </b-form-group>
         <b-form-group>
           <b-input-group size="md" prepend="Senha">
             <b-input
@@ -67,15 +78,16 @@ export default {
         nome: "",
         perfil: "",
         senha: "",
+        contato: ""
       },
       show: true,
-      perfil: [],
+      perfil: []
     };
   },
   methods: {
     cadastra() {
       if (this.perfil.length >= 1) {
-        this.definePerfil(this.perfil, this.usuario)
+        this.definePerfil(this.perfil, this.usuario);
         Usuario.cadastra(this.usuario).then(resposta => {
           if (resposta.data.status === false) {
             alert("Cadastro inválido");
@@ -94,19 +106,18 @@ export default {
 
     definePerfil(perfil, usuario) {
       if (perfil.length == 2) {
-        usuario.perfil = "geral"
-        return
+        usuario.perfil = "geral";
+        return;
       }
-      
+
       perfil.forEach(p => {
         if (p == 2) {
-          usuario.perfil = "consumidor"
+          usuario.perfil = "consumidor";
         }
-        if(p == 1) {
-          usuario.perfil = "produtor"
+        if (p == 1) {
+          usuario.perfil = "produtor";
         }
       });
-
     },
 
     limpa() {

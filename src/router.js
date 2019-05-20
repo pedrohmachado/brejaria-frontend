@@ -86,7 +86,7 @@ let router = new Router ({
   ]
 })
 
-const openRoutes = ['Login', 'Cadastro', 'Home'];
+const openRoutes = ['Login', 'Cadastro', 'Home', 'Sobre'];
 
 router.beforeEach((to, from, next) => {
   if(openRoutes.includes(to.name)){
