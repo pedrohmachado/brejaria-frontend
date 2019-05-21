@@ -57,6 +57,6 @@ export default {
   margin: auto;
   margin-bottom: 50px !important;
   margin-top: 50px !important;
-  padding: 20px;
+  padding: 5px;
 }
 </style>

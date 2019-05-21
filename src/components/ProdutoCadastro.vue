@@ -52,11 +52,11 @@ export default {
   },
   methods: {
     cadastra() {
-      Produto.cadastraProduto(this.produto).then(resposta => {
-        let idProduto = JSON.stringify(resposta.data.produto.id);
-        alert(idProduto);
-        this.produto = {};
-        this.$router.push({ path: "/produto/" + idProduto });
+      Produto.cadastraProduto(this.produto).then((resposta) => {
+          let idProduto = JSON.stringify(resposta.data.produto.id);
+          this.produto = {};
+          this.$router.push({ path: "/produto/" + idProduto });
+        
       });
     },
     limpa(evt) {

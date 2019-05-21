@@ -9,7 +9,7 @@
 
       <b-form>
         <b-input-group size="lg" prepend="Busca">
-          <b-form-input v-model="busca" placeholder="Faça um consulta pelo nome do evento"></b-form-input>
+          <b-form-input v-model="busca" placeholder="Faça um consulta pelo nome ou local do evento"></b-form-input>
           <b-input-group-append>
             <b-button @click="filtra()">
               <v-icon>mdi-magnify</v-icon>
@@ -38,7 +38,7 @@
           >
             <b-card-title>{{item.nome}}</b-card-title>
             <b-card-sub-title>
-              <img class="icon" src="../assets/local.png">
+              <v-icon>mdi-map-marker</v-icon>
               {{item.local}}
             </b-card-sub-title>
             <b-card-text>{{item.descricao}}</b-card-text>
@@ -117,6 +117,10 @@ export default {
       this.eventosFiltrados = [];
       this.eventos.forEach(evento => {
         if (evento.nome.toLowerCase().indexOf(this.busca.toLowerCase()) > -1) {
+          this.eventosFiltrados.push(evento);
+        } else if (
+          evento.local.toLowerCase().indexOf(this.busca.toLowerCase()) > -1
+        ) {
           this.eventosFiltrados.push(evento);
         }
       });

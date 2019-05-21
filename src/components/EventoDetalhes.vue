@@ -42,6 +42,37 @@
         </b-tab>
         <b-tab title="Produtos">
           <b-card-text>Total: {{numProdutos}}</b-card-text>
+          <p></p>
+
+          <v-dialog v-model="dialog" scrollable max-width="300px">
+            <template v-slot:activator="{ on }">
+              <b-btn v-on="on">Adicionar</b-btn>
+            </template>
+            <v-card>
+              <v-card-title>Selecione os produtos</v-card-title>
+              <v-divider></v-divider>
+              <v-card-text style="height: 300px;">
+                {{produtosUsuarioSelecionados}}
+                <v-checkbox
+                  v-model="produtosUsuarioSelecionados"
+                  v-for="produto in produtosUsuario"
+                  :key="produto.id"
+                  :label="produto.nome"
+                  :value="produto"
+                ></v-checkbox>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <b-btn-group style="margin: auto;">
+                  <b-button variant="success" @click="dialog = false; adicionaProduto()">Salvar</b-button>
+                  <b-button variant="info" @click="dialog = false;">Fechar</b-button>
+                  <b-button @click="getProdutosRefEvento()">SHOW</b-button>
+                </b-btn-group>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <p></p>
           <div>
             <p v-for="(item, index) in produtos" :index="index++" :key="item.id">
               <router-link
@@ -78,8 +109,64 @@
               ></b-form-file>
               <p></p>
               <b-button type="submit">Upload</b-button>
+              <p></p>
             </div>
           </form>
+          <div class="form-cadastro">
+            <b-form @submit="altera" v-if="show" @reset="limpa">
+              <b-form-group>
+                <b-input-group size="md" prepend="Nome">
+                  <b-input
+                    v-model="evento.nome"
+                    required
+                    size="md"
+                    type="text"
+                    placeholder="Digite o nome do seu evento"
+                  ></b-input>
+                </b-input-group>
+              </b-form-group>
+              <b-form-group>
+                <b-input-group size="md" prepend="Descrição">
+                  <b-form-textarea
+                    v-model="evento.descricao"
+                    required
+                    size="md"
+                    type="email"
+                    placeholder="Faça as pessoas se interessarem pelo seu evento"
+                  ></b-form-textarea>
+                </b-input-group>
+              </b-form-group>
+              <b-form-group>
+                <b-input-group size="md" prepend="Local">
+                  <b-input
+                    v-model="evento.local"
+                    required
+                    size="md"
+                    type="text"
+                    placeholder="Local"
+                  ></b-input>
+                </b-input-group>
+              </b-form-group>
+
+              <b-form-group>
+                <div class="d-inline-block w-50">
+                  <b-input-group size="md" prepend="Data">
+                    <b-input v-model="data" required size="md" type="date"></b-input>
+                  </b-input-group>
+                </div>
+                <div class="d-inline-block w-50">
+                  <b-input-group size="md" prepend="Hora">
+                    <b-input v-model="hora" required size="md" type="time"></b-input>
+                  </b-input-group>
+                </div>
+              </b-form-group>
+
+              <b-btn-group>
+                <b-button variant="success" type="submit">Enviar</b-button>
+                <b-button variant="info" type="reset">Limpar</b-button>
+              </b-btn-group>
+            </b-form>
+          </div>
         </b-tab>
       </b-tabs>
     </b-card>
@@ -101,6 +188,8 @@ export default {
   },
   data() {
     return {
+      dialogm1: "",
+      dialog: false,
       evento: {
         id: "",
         nome: "",
@@ -120,7 +209,7 @@ export default {
         descricao: "",
         usuario_id: ""
       },
-      produtos: [],
+      produtosANTIGOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: [],
       urlImagem: "",
       selectedFile: null,
       mostraFormularioUpload: false,
@@ -128,7 +217,11 @@ export default {
       avaliacaoEvento: {
         avaliacao: 0
       },
-      avaliacaoMedia: 0
+      avaliacaoMedia: 0,
+      show: true,
+      produtosUsuario: [],
+      produtosUsuarioSelecionados: [],
+      produtos: [],
     };
   },
 
@@ -137,9 +230,34 @@ export default {
     this.getEvento();
     this.urlImagem = URLImagemEvento + this.$route.params.id;
     this.verificaUsuarioEditor(this.evento, this.usuario);
+    this.getProdutosUsuario();
   },
 
   methods: {
+    adicionaProduto(){
+      Evento.adicionaProdutoEvento(this.produtosUsuarioSelecionados, this.evento.id).then(resposta=>{
+        alert(JSON.stringify(resposta.data))
+      })
+    },
+
+    getProdutosRefEvento(){
+      Produto.getProdutosRefEvento(this.evento.id).then(resposta=>{
+        alert(JSON.stringify(resposta.data))
+        this.produtos = resposta.data.data.produtos
+      })
+    },
+    
+    getProdutosUsuario() {
+      Produto.getMeusProdutos().then(resposta => {
+        this.produtosUsuario = resposta.data.data;
+      });
+    },
+
+    altera() {
+      Evento.alteraEvento(this.evento).then(() => {});
+    },
+
+    limpa() {},
     avaliaEvento(avaliacao) {
       this.avaliacaoEvento.avaliacao = avaliacao;
       Avaliacao.avaliaEvento(this.evento.id, this.avaliacaoEvento).then(() => {
@@ -196,6 +314,7 @@ export default {
         this.getAvaliacaoUsuarioEvento(this.evento);
         this.validaParticipacao(this.evento, this.usuario);
         this.verificaUsuarioEditor(this.evento, this.usuario);
+        this.setDataHora(this.evento);
       });
     },
 
@@ -229,6 +348,13 @@ export default {
       } else {
         this.usuarioParticipante = false;
       }
+    },
+
+    setDataHora(evento) {
+      var DataHora = evento.data_evento;
+      var DataHoraSplitted = DataHora.split(" ");
+      this.data = DataHoraSplitted[0];
+      this.hora = DataHoraSplitted[1];
     }
   }
 };

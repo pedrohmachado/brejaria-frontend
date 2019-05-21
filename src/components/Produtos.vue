@@ -4,7 +4,7 @@
       <h1>Produtos</h1>
       <p>descrição produtos</p>
 
-      <b-button to="/produto/novo">Crie seu produto</b-button>
+      <b-button v-show="show" to="/produto/novo">Crie seu produto</b-button>
       <p></p>
 
       <b-form>
@@ -71,7 +71,13 @@ export default {
         "usuario_id",
         "acoes"
       ],
-      busca: '',
+      busca: "",
+      show: false,
+      usuario: {
+        id: "",
+        nome: "",
+        perfil: ""
+      }
     };
   },
 
@@ -80,6 +86,13 @@ export default {
   },
 
   methods: {
+    getUsuario() {
+      Usuario.getPerfil().then(resposta => {
+        this.usuario = resposta.data.data;
+        this.mostra(this.usuario);
+      });
+    },
+
     getProdutores() {
       Usuario.getProdutores().then(resposta => {
         this.produtores = resposta.data.data.usuarios;
@@ -89,18 +102,27 @@ export default {
     getProdutos() {
       Produto.getProdutos().then(resposta => {
         this.produtos = resposta.data.data;
-        this.produtosFiltrados = this.produtos
+        this.produtosFiltrados = this.produtos;
         this.getProdutores();
+        this.getUsuario();
       });
+    },
+
+    mostra(usuario) {
+      if (JSON.stringify(usuario.perfil) == JSON.stringify("consumidor")) {
+        this.show = false;
+      } else {
+        this.show = true;
+      }
     },
 
     getNomeProdutor(produto) {
       this.produtores.forEach(produtor => {
-        if(produtor.id == produto.usuario_id) {
-          produto.nome_produtor = produtor.nome
+        if (produtor.id == produto.usuario_id) {
+          produto.nome_produtor = produtor.nome;
         }
       });
-      return produto.nome_produtor
+      return produto.nome_produtor;
     },
 
     detalhaProduto(produto) {

@@ -236,7 +236,11 @@ export default {
       });
     },
 
-    altera() {},
+    altera() {
+      Produto.alteraProduto(this.produto).then(()=>{
+        
+      });
+    },
     limpa() {}
   }
 };

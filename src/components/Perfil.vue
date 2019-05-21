@@ -170,8 +170,19 @@
             ></b-input>
           </b-input-group>
         </b-form-group>
-        <b-form-group>
-          <b-input-group size="md" prepend="Senha atual">
+         <b-form-group label-for="perfilInput" description>
+          <b-input-group id="perfilInput" size="md" prepend="Perfil">
+            <b-input
+              v-model="usuario.perfil"
+              required
+              size="md"
+              type="text"
+              disabled
+            ></b-input>
+          </b-input-group>
+        </b-form-group>
+        <b-form-group label-for="senhaInput" description="Sua senha será necessária quando alguma alteração for realizada.">
+          <b-input-group id="senhaInput" size="md" prepend="Senha atual">
             <b-input
               v-model="usuario.senha"
               required

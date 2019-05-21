@@ -36,5 +36,17 @@ export default {
         return instance.get('produto/' + IDProduto, {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
+    },
+
+    alteraProduto:(produto)=>{
+        return instance.put('produto/alterar', produto, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        } )
+    },
+
+    getProdutosRefEvento:(IDEvento)=>{
+        return instance.get('evento/'+ IDEvento +'/produtos-ref', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
     }
 }

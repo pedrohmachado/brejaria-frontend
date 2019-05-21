@@ -56,5 +56,17 @@ export default {
         return instance.get('produtor/' + IDProdutor + '/eventos', {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
+    },
+
+    alteraEvento:(evento)=>{
+        return instance.put('evento/alterar', evento, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    },
+
+    adicionaProdutoEvento:(eventos, IDEvento)=>{
+        return instance.post('evento/' +IDEvento+ '/adicionar-produtos', eventos, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
     }
 }
