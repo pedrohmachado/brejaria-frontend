@@ -4,7 +4,7 @@
       <h1>O que é a Brejaria?</h1>
       <template>
         <v-timeline>
-          <v-timeline-item v-for="quadro in quadros" :key="quadro" color="red lighten-2" large>
+          <v-timeline-item v-for="quadro in quadros" :key="quadro.titulo" color="red lighten-2" large>
             <template v-slot:opposite>
               <span>{{quadro.oposto}}</span>
             </template>

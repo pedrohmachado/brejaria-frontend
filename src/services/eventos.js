@@ -68,5 +68,24 @@ export default {
         return instance.post('evento/' +IDEvento+ '/adicionar-produtos', eventos, {
             headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
         })
-    }
+    },
+
+    removeProdutoEvento:(eventos, IDEvento)=>{
+        return instance.post('evento/' +IDEvento+ '/remover-produtos', eventos, {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    },
+
+    getEventosRefProduto:(IDProduto)=>{
+        return instance.get('produto/'+IDProduto+'/eventos-ref', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    },
+
+    getCriadorEvento:(IDEvento)=>{
+        return instance.get('evento/'+IDEvento+'/criador', {
+            headers: { Authorization: `Bearer ` + localStorage.getItem('token') }
+        })
+    },
+        
 }

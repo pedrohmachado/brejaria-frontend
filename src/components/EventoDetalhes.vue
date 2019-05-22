@@ -16,17 +16,24 @@
             inline
             v-model="avaliacaoMedia"
           ></star-rating>
+          <p>
+            <small>{{numAvaliacao}}</small>
+          </p>
           <p></p>
           <b-img class="img" thumbnail fluid v-bind:src="urlImagem"/>
           <b-container style="padding: 20px;">
             <p>Descrição: {{evento.descricao}}</p>
             <p>Local: {{evento.local}}</p>
             <p>Data do evento: {{evento.data_evento}}</p>
+
             <p>
               <small>Data de criação: {{evento.data_criacao}}</small>
+              <br>
+              <small>Criador do evento: {{nomeCriador}}</small>
             </p>
+
             <p>Participantes: {{evento.participantes.length}}</p>
-            <p>Produtos: {{numProdutos}}</p>
+            <p>Produtos: {{produtos.length}}</p>
 
             <p>Sua avaliação:</p>
             <star-rating
@@ -41,32 +48,39 @@
           </b-container>
         </b-tab>
         <b-tab title="Produtos">
-          <b-card-text>Total: {{numProdutos}}</b-card-text>
+          <b-card-text>Total: {{produtos.length}}</b-card-text>
           <p></p>
 
-          <v-dialog v-model="dialog" scrollable max-width="300px">
+          <v-dialog data-app v-model="dialog" scrollable max-width="300px">
             <template v-slot:activator="{ on }">
-              <b-btn v-on="on">Adicionar</b-btn>
+              <b-btn
+                v-on="on"
+                @click="getProdutosUsuarioSelecionado(produtos, produtosUsuario);"
+              >Seus produtos</b-btn>
             </template>
             <v-card>
               <v-card-title>Selecione os produtos</v-card-title>
               <v-divider></v-divider>
               <v-card-text style="height: 300px;">
-                {{produtosUsuarioSelecionados}}
+                PRODUTOS SELECIONADOS {{produtosUsuarioSelecionados}}
+                PRODUTOS NAO SELECIONADOS {{produtosUsuarioNaoSelecionados}}
                 <v-checkbox
                   v-model="produtosUsuarioSelecionados"
                   v-for="produto in produtosUsuario"
                   :key="produto.id"
                   :label="produto.nome"
                   :value="produto"
+                  @change="getProdutosUsuarioNaoSelecionados(produtosUsuario, produtosUsuarioSelecionados)"
                 ></v-checkbox>
               </v-card-text>
               <v-divider></v-divider>
               <v-card-actions>
                 <b-btn-group style="margin: auto;">
-                  <b-button variant="success" @click="dialog = false; adicionaProduto()">Salvar</b-button>
+                  <b-button
+                    variant="success"
+                    @click="dialog = false; manipulaProdutoEvento()"
+                  >Salvar</b-button>
                   <b-button variant="info" @click="dialog = false;">Fechar</b-button>
-                  <b-button @click="getProdutosRefEvento()">SHOW</b-button>
                 </b-btn-group>
               </v-card-actions>
             </v-card>
@@ -209,7 +223,6 @@ export default {
         descricao: "",
         usuario_id: ""
       },
-      produtosANTIGOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: [],
       urlImagem: "",
       selectedFile: null,
       mostraFormularioUpload: false,
@@ -218,10 +231,13 @@ export default {
         avaliacao: 0
       },
       avaliacaoMedia: 0,
+      numAvaliacao: 0,
       show: true,
       produtosUsuario: [],
       produtosUsuarioSelecionados: [],
+      produtosUsuarioNaoSelecionados: [],
       produtos: [],
+      nomeCriador: ""
     };
   },
 
@@ -230,26 +246,73 @@ export default {
     this.getEvento();
     this.urlImagem = URLImagemEvento + this.$route.params.id;
     this.verificaUsuarioEditor(this.evento, this.usuario);
-    this.getProdutosUsuario();
   },
 
   methods: {
-    adicionaProduto(){
-      Evento.adicionaProdutoEvento(this.produtosUsuarioSelecionados, this.evento.id).then(resposta=>{
-        alert(JSON.stringify(resposta.data))
+    manipulaProdutoEvento() {
+      if (this.produtosUsuarioNaoSelecionados.length > 0) {
+        Evento.removeProdutoEvento(
+          this.produtosUsuarioNaoSelecionados,
+          this.evento.id
+        ).then(() => {
+          // this.produtos = resposta.data.data.produtos;
+          this.getProdutosRefEvento();
+        });
+      }
+
+      if (this.produtosUsuarioSelecionados.length > 0) {
+        Evento.adicionaProdutoEvento(
+          this.produtosUsuarioSelecionados,
+          this.evento.id
+        ).then(() => {
+          // this.produtos = resposta.data.data.produtos;
+          this.getProdutosRefEvento();
+        });
+      }
+    },
+
+    getProdutosRefEvento() {
+      Produto.getProdutosRefEvento(this.evento.id).then(resposta => {
+        this.produtos = resposta.data.data.produtos;
+        this.getProdutosUsuario();
+      });
+    },
+
+    getCriadorEvento(){
+      Evento.getCriadorEvento(this.$route.params.id).then(resposta=>{
+        this.nomeCriador = resposta.data.data.criador.nome
       })
     },
 
-    getProdutosRefEvento(){
-      Produto.getProdutosRefEvento(this.evento.id).then(resposta=>{
-        alert(JSON.stringify(resposta.data))
-        this.produtos = resposta.data.data.produtos
-      })
-    },
-    
     getProdutosUsuario() {
       Produto.getMeusProdutos().then(resposta => {
         this.produtosUsuario = resposta.data.data;
+      });
+    },
+
+    getProdutosUsuarioSelecionado(produtos, produtosUsuario) {
+      this.produtosUsuarioSelecionados = [];
+      produtos.forEach(produto => {
+        produtosUsuario.forEach(produtoUsuario => {
+          if (JSON.stringify(produto.id) == JSON.stringify(produtoUsuario.id)) {
+            if (!this.produtosUsuarioSelecionados.includes(produtoUsuario)) {
+              this.produtosUsuarioSelecionados.push(produtoUsuario);
+            }
+          }
+        });
+      });
+      this.getProdutosUsuarioNaoSelecionados(
+        produtosUsuario,
+        this.produtosUsuarioSelecionados
+      );
+    },
+
+    getProdutosUsuarioNaoSelecionados(produtosUsuario, produtosSelecionados) {
+      this.produtosUsuarioNaoSelecionados = [];
+      produtosUsuario.forEach(produtoUsuario => {
+        if (!produtosSelecionados.includes(produtoUsuario)) {
+          this.produtosUsuarioNaoSelecionados.push(produtoUsuario);
+        }
       });
     },
 
@@ -269,6 +332,7 @@ export default {
     getAvaliacaoMediaEvento(evento) {
       Avaliacao.getAvaliacaoMediaEvento(evento.id).then(resposta => {
         this.avaliacaoMedia = resposta.data.data.avaliacaoMediaEvento;
+        this.numAvaliacao = resposta.data.data.numAvaliacoes;
       });
     },
 
@@ -309,19 +373,19 @@ export default {
     getEvento() {
       Evento.getEvento(this.$route.params.id).then(resposta => {
         this.evento = resposta.data.data;
-        this.getProdutosEvento();
         this.getAvaliacaoMediaEvento(this.evento);
         this.getAvaliacaoUsuarioEvento(this.evento);
         this.validaParticipacao(this.evento, this.usuario);
         this.verificaUsuarioEditor(this.evento, this.usuario);
         this.setDataHora(this.evento);
+        this.getProdutosRefEvento();
+        this.getCriadorEvento();
       });
     },
 
     getProdutosEvento() {
       Produto.getProdutosEvento(this.$route.params.id).then(resposta => {
         this.produtos = resposta.data.data;
-        this.numProdutos = this.produtos.length;
       });
     },
 

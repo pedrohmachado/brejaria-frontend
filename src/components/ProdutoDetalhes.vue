@@ -27,6 +27,9 @@
                 v-model="avaliacaoMedia"
               ></star-rating>
             </p>
+            <p>
+              <small>{{numAvaliacoes}}</small>
+            </p>
 
             <p>
               Sua avaliação:
@@ -147,7 +150,8 @@ export default {
         id: "",
         nome: ""
       },
-      show: true
+      show: true,
+      numAvaliacoes: 0
     };
   },
 
@@ -186,6 +190,7 @@ export default {
     getAvaliacaoMediaProduto(produto) {
       Avaliacao.getAvaliacaoMediaProduto(produto.id).then(resposta => {
         this.avaliacaoMedia = resposta.data.data.avaliacaoMediaProduto;
+        this.numAvaliacoes = resposta.data.data.numAvaliacoes;
       });
     },
 
@@ -198,8 +203,14 @@ export default {
     },
 
     getEventosProduto() {
-      Evento.getEventosProduto(this.$route.params.id).then(resposta => {
-        this.eventos = resposta.data.data;
+      // Evento.getEventosProduto(this.$route.params.id).then(resposta => {
+      //   this.eventos = resposta.data.data;
+      //   this.numEventos = this.eventos.length;
+      //   this.verificaUsuario(this.produto, this.usuario);
+      // });
+      Evento.getEventosRefProduto(this.$route.params.id).then(resposta => {
+        alert(JSON.stringify(resposta.data.data.eventos))
+        this.eventos = resposta.data.data.eventos;
         this.numEventos = this.eventos.length;
         this.verificaUsuario(this.produto, this.usuario);
       });
@@ -237,9 +248,7 @@ export default {
     },
 
     altera() {
-      Produto.alteraProduto(this.produto).then(()=>{
-        
-      });
+      Produto.alteraProduto(this.produto).then(() => {});
     },
     limpa() {}
   }
