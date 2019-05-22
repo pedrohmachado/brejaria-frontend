@@ -20,7 +20,7 @@
             <small>{{numAvaliacao}}</small>
           </p>
           <p></p>
-          <b-img class="img" thumbnail fluid v-bind:src="urlImagem"/>
+          <b-img class="img" thumbnail fluid v-bind:src="urlImagem" alt="noimg"/>
           <b-container style="padding: 20px;">
             <p>Descrição: {{evento.descricao}}</p>
             <p>Local: {{evento.local}}</p>

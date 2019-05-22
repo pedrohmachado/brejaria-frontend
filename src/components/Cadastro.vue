@@ -1,7 +1,20 @@
 <template>
   <div class="cadastro">
     <h1>Informe seus dados</h1>
+
     <div class="form-cadastro">
+      <b-alert
+        v-model="showPerfilErro"
+        variant="danger"
+        dismissible
+      >Selecione ao menos uma opção de interesse.</b-alert>
+
+      <b-alert
+        v-model="showCadastroErro"
+        variant="danger"
+        dismissible
+      >Cadastro inválido. (E-mail já cadastrado).</b-alert>
+
       <b-form @submit="cadastra" v-if="show" @reset="limpa">
         <b-form-group>
           <b-input-group size="md" prepend="Nome">
@@ -81,7 +94,9 @@ export default {
         contato: ""
       },
       show: true,
-      perfil: []
+      perfil: [],
+      showPerfilErro: false,
+      showCadastroErro: false
     };
   },
   methods: {
@@ -90,7 +105,7 @@ export default {
         this.definePerfil(this.perfil, this.usuario);
         Usuario.cadastra(this.usuario).then(resposta => {
           if (resposta.data.status === false) {
-            alert("Cadastro inválido");
+            this.showCadastroErro = true;
           } else {
             let token = resposta.data.usuario.token;
             let nome = resposta.data.usuario.nome;
@@ -100,7 +115,7 @@ export default {
           }
         });
       } else {
-        alert("Selecionar ao menos uma opção de Interesses");
+        this.showPerfilErro = true;
       }
     },
 

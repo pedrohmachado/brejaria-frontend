@@ -132,6 +132,7 @@
 
     <h1>Meus dados</h1>
     <div class="form-cadastro">
+      <b-alert v-model="showLoginErro" variant="danger" dismissible>Senha atual não correspondente.</b-alert>
       <b-form @submit="altera" @reset="limpa">
         <b-form-group>
           <b-input-group size="md" prepend="Nome">
@@ -159,7 +160,7 @@
             />
           </b-input-group>
         </b-form-group>
-         <b-form-group label-for="contatoInput" description>
+        <b-form-group label-for="contatoInput" description>
           <b-input-group id="contatoInput" size="md" prepend="Contato">
             <b-input
               v-model="usuario.contato"
@@ -170,18 +171,15 @@
             ></b-input>
           </b-input-group>
         </b-form-group>
-         <b-form-group label-for="perfilInput" description>
+        <b-form-group label-for="perfilInput" description>
           <b-input-group id="perfilInput" size="md" prepend="Perfil">
-            <b-input
-              v-model="usuario.perfil"
-              required
-              size="md"
-              type="text"
-              disabled
-            ></b-input>
+            <b-input v-model="usuario.perfil" required size="md" type="text" disabled></b-input>
           </b-input-group>
         </b-form-group>
-        <b-form-group label-for="senhaInput" description="Sua senha será necessária quando alguma alteração for realizada.">
+        <b-form-group
+          label-for="senhaInput"
+          description="Sua senha será necessária quando alguma alteração for realizada."
+        >
           <b-input-group id="senhaInput" size="md" prepend="Senha atual">
             <b-input
               v-model="usuario.senha"
@@ -280,7 +278,8 @@ export default {
       linkProduto: "",
       linkEvento: "",
       linkEventoParticipa: "",
-      novaSenha: ""
+      novaSenha: "",
+      showLoginErro: false,
     };
   },
 
@@ -373,9 +372,13 @@ export default {
       }
       this.definePerfil(this.perfil, this.usuario);
       Usuario.altera(this.usuario, this.novaSenha).then(resposta => {
-        this.usuario = resposta.data.data;
-        this.getPerfil();
-        this.getMeusEventos();
+        if (JSON.stringify(resposta.data.data.status) == JSON.stringify(false)) {
+          this.showLoginErro = true;
+        } else {
+          this.usuario = resposta.data.data;
+          this.getPerfil();
+          this.getMeusEventos();
+        }
       });
     },
 

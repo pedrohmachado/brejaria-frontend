@@ -6,16 +6,7 @@
       <b-tabs card>
         <b-tab title="Info" active>
           <b-card-text>Informações sobre {{produto.nome}}</b-card-text>
-          <b-img class="img" thumbnail fluid v-bind:src="urlImagem"/>
-          <b-container style="padding: 20px;">
-            <p>Descrição: {{produto.descricao}}</p>
-            <p>Eventos relacionados: {{numEventos}}</p>
-            <p>
-              Produtor:
-              <router-link v-bind:to="'/produtor/' + produtor.id">{{produtor.nome}}</router-link>
-            </p>
-
-            <p>
+          <p>
               Avaliação média:
               <star-rating
                 :star-size="25"
@@ -29,6 +20,14 @@
             </p>
             <p>
               <small>{{numAvaliacoes}}</small>
+            </p>
+          <b-img class="img" thumbnail fluid v-bind:src="urlImagem" alt="noimg"/>
+          <b-container style="padding: 20px;">
+            <p>Descrição: {{produto.descricao}}</p>
+            <p>Eventos relacionados: {{numEventos}}</p>
+            <p>
+              Produtor:
+              <router-link v-bind:to="'/produtor/' + produtor.id">{{produtor.nome}}</router-link>
             </p>
 
             <p>
@@ -209,7 +208,7 @@ export default {
       //   this.verificaUsuario(this.produto, this.usuario);
       // });
       Evento.getEventosRefProduto(this.$route.params.id).then(resposta => {
-        alert(JSON.stringify(resposta.data.data.eventos))
+        //alert(JSON.stringify(resposta.data.data.eventos))
         this.eventos = resposta.data.data.eventos;
         this.numEventos = this.eventos.length;
         this.verificaUsuario(this.produto, this.usuario);

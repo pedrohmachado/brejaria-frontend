@@ -74,11 +74,11 @@ export default {
   methods: {
     cadastra() {
       this.evento.data_evento = this.data + " " + this.hora;
-      alert(JSON.stringify(this.evento));
-      Evento.cadastraEvento(this.evento).then(resposta => {
-        alert(JSON.stringify(resposta));
+      //alert(JSON.stringify(this.evento));
+      Evento.cadastraEvento(this.evento).then(() => {
+        //alert(JSON.stringify(resposta));
         this.evento = {};
-        alert("Salvo com sucesso");
+        //alert("Salvo com sucesso");
         this.$router.push({ path: "/eventos" });
       });
     },

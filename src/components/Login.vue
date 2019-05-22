@@ -3,6 +3,11 @@
     <b-form @submit="login" class="form-signin">
       <img class="mb-4" src="../assets/logo.png" alt width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">Dados de acesso</h1>
+      <b-alert
+        v-model="showLoginErro"
+        variant="danger"
+        dismissible
+      >Login inválido (Senha ou E-mail estão incorretos).</b-alert>
       <label for="inputEmail" class="sr-only">E-mail</label>
       <b-form-input
         type="email"
@@ -43,7 +48,8 @@ export default {
         email: "",
         senha: "",
         token: ""
-      }
+      },
+      showLoginErro: false,
     };
   },
 
@@ -51,7 +57,7 @@ export default {
     login() {
       Usuario.login(this.usuario).then(resposta => {
         if (resposta.data.status === false) {
-          alert("Login inválido");
+          this.showLoginErro = true;
         } else {
           let token = resposta.data.usuario.token;
           let nome = resposta.data.usuario.nome;
